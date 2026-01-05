@@ -45,7 +45,7 @@ func Run(ctx context.Context) error {
 		return errRunCommand
 	}
 
-	grpcServerOption := grpctransport.ServerOption(lgr)
+	grpcServerOption := grpctransport.ServerOption(lgr, cfg.Auth.Token)
 	grpcServer, err := grpctransport.NewServer(lgr, cfg.GRPCServer, grpcServerOption)
 	if err != nil {
 		lgr.Error("create grpc server", slog.String("error", err.Error()))

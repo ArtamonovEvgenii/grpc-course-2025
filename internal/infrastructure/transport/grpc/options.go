@@ -11,10 +11,12 @@ import (
 
 func ServerOption(
 	lgr *slog.Logger,
+	token string,
 ) grpc.ServerOption {
 	grpcServerOption := grpc.UnaryInterceptor(
 		grpcmiddleware.ChainUnaryServer(
 			interceptor.NewRecoveryUnaryInterceptor(lgr),
+			interceptor.NewAuthUnaryInterceptor(token),
 			interceptor.NewLoggingUnaryInterceptor(lgr),
 		))
 

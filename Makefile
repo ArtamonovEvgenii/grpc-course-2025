@@ -1,3 +1,6 @@
+-include local/local.env
+export
+
 SERVER_BIN_NAME=server
 
 
