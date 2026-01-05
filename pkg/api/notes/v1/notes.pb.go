@@ -7,6 +7,7 @@
 package v1
 
 import (
+	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	datetime "google.golang.org/genproto/googleapis/type/datetime"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -558,10 +559,12 @@ var File_api_notes_v1_notes_proto protoreflect.FileDescriptor
 
 const file_api_notes_v1_notes_proto_rawDesc = "" +
 	"\n" +
-	"\x18api/notes/v1/notes.proto\x12\fapi.notes.v1\x1a\x1agoogle/type/datetime.proto\"=\n" +
-	"\x11CreateNoteRequest\x12\x14\n" +
-	"\x05title\x18\x01 \x01(\tR\x05title\x12\x12\n" +
-	"\x04text\x18\x02 \x01(\tR\x04text\"(\n" +
+	"\x18api/notes/v1/notes.proto\x12\fapi.notes.v1\x1a\x1agoogle/type/datetime.proto\x1a\x1bbuf/validate/validate.proto\"R\n" +
+	"\x11CreateNoteRequest\x12 \n" +
+	"\x05title\x18\x01 \x01(\tB\n" +
+	"\xbaH\ar\x05\x10\x05\x18\xff\x01R\x05title\x12\x1b\n" +
+	"\x04text\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x10\n" +
+	"R\x04text\"(\n" +
 	"\x12CreateNoteResponse\x12\x12\n" +
 	"\x04uuid\x18\x01 \x01(\tR\x04uuid\"\x15\n" +
 	"\x13GetNotesListRequest\"z\n" +
@@ -580,11 +583,13 @@ const file_api_notes_v1_notes_proto_rawDesc = "" +
 	"\x04text\x18\x03 \x01(\tR\x04text\x122\n" +
 	"\tcrated_at\x18\x04 \x01(\v2\x15.google.type.DateTimeR\bcratedAt\x124\n" +
 	"\n" +
-	"updated_at\x18\x05 \x01(\v2\x15.google.type.DateTimeR\tupdatedAt\"Q\n" +
+	"updated_at\x18\x05 \x01(\v2\x15.google.type.DateTimeR\tupdatedAt\"f\n" +
 	"\x11UpdateNoteRequest\x12\x12\n" +
-	"\x04uuid\x18\x01 \x01(\tR\x04uuid\x12\x14\n" +
-	"\x05title\x18\x02 \x01(\tR\x05title\x12\x12\n" +
-	"\x04text\x18\x03 \x01(\tR\x04text\"\x14\n" +
+	"\x04uuid\x18\x01 \x01(\tR\x04uuid\x12 \n" +
+	"\x05title\x18\x02 \x01(\tB\n" +
+	"\xbaH\ar\x05\x10\x05\x18\xff\x01R\x05title\x12\x1b\n" +
+	"\x04text\x18\x03 \x01(\tB\a\xbaH\x04r\x02\x10\n" +
+	"R\x04text\"\x14\n" +
 	"\x12UpdateNoteResponse\"'\n" +
 	"\x11DeleteNoteRequest\x12\x12\n" +
 	"\x04uuid\x18\x01 \x01(\tR\x04uuid\"\x14\n" +

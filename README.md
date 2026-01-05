@@ -107,4 +107,8 @@ Auth Interceptor:
 
 ```shell
 easyp mod download
+easyp mod update
+
+# fix ambiguous import: found package cloud.google.com/go/compute/metadata in multiple modules 
+go get cloud.google.com/go
 ```

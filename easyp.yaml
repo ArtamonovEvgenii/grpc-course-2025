@@ -3,6 +3,7 @@ version: v1alpha
 
 deps:
   - github.com/googleapis/googleapis
+  - github.com/bufbuild/protovalidate@v0.3.1
 
 
 generate:

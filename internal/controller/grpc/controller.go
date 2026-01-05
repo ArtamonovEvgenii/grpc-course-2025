@@ -3,6 +3,7 @@ package grpc
 import (
 	"context"
 
+	"buf.build/go/protovalidate"
 	"github.com/google/uuid"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -36,6 +37,10 @@ func (c *Controller) CreateNote(
 	ctx context.Context,
 	req *pb.CreateNoteRequest,
 ) (*pb.CreateNoteResponse, error) {
+	if err := protovalidate.Validate(req); err != nil {
+		return nil, status.Error(codes.InvalidArgument, err.Error())
+	}
+
 	noteInit := entity.NoteInitialData{
 		Title: req.Title,
 		Text:  req.Text,
@@ -110,6 +115,10 @@ func (c *Controller) UpdateNote(
 	ctx context.Context,
 	req *pb.UpdateNoteRequest,
 ) (*pb.UpdateNoteResponse, error) {
+	if err := protovalidate.Validate(req); err != nil {
+		return nil, status.Error(codes.InvalidArgument, err.Error())
+	}
+
 	noteUUID, err := uuid.Parse(req.Uuid)
 	if err != nil {
 		return nil, status.Errorf(codes.InvalidArgument, err.Error())
