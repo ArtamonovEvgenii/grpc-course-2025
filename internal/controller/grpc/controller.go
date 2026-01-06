@@ -2,6 +2,9 @@ package grpc
 
 import (
 	"context"
+	"fmt"
+	"log/slog"
+	"time"
 
 	"buf.build/go/protovalidate"
 	"github.com/google/uuid"
@@ -22,11 +25,16 @@ type notesUsecase interface {
 
 type Controller struct {
 	pb.UnimplementedNotesAPIServer
+	lgr          *slog.Logger
 	notesUsecase notesUsecase
 }
 
-func NewController(notesUsecase notesUsecase) (*Controller, error) {
+func NewController(
+	lgr *slog.Logger,
+	notesUsecase notesUsecase,
+) (*Controller, error) {
 	controller := &Controller{
+		lgr:          lgr,
 		notesUsecase: notesUsecase,
 	}
 
@@ -154,4 +162,63 @@ func (c *Controller) DeleteNote(ctx context.Context, req *pb.DeleteNoteRequest) 
 	resp := &pb.DeleteNoteResponse{}
 
 	return resp, nil
+}
+
+func (c *Controller) SubscribeToEvents(
+	_ *pb.SubscribeToEventsRequest,
+	stream pb.NotesAPI_SubscribeToEventsServer,
+) error {
+	c.lgr.Info("subscribing to events")
+	defer c.lgr.Info("unsubscribing from events")
+
+	heartbeatTicker := time.NewTicker(1 * time.Microsecond) // first response immediately
+	defer heartbeatTicker.Stop()
+
+	eventTicker := time.NewTicker(10 * time.Second)
+	defer eventTicker.Stop()
+
+	ctx := stream.Context()
+
+	var noteNum int
+
+	for {
+		select {
+		case <-ctx.Done():
+			c.lgr.Info("stream context done")
+			return nil
+		case <-heartbeatTicker.C:
+			heartbeatResp := &pb.SubscribeToEventsResponse_Heartbeat{
+				Heartbeat: &pb.HeartbeatEvent{
+					Timestamp: responseDateTime(time.Now()),
+				},
+			}
+			resp := &pb.SubscribeToEventsResponse{Payload: heartbeatResp}
+			err := stream.Send(resp)
+			if err != nil {
+				c.lgr.Error("send response", slog.String("error", err.Error()))
+			}
+
+			heartbeatTicker.Reset(5 * time.Second)
+		case <-eventTicker.C:
+			noteNum++
+			noteUUID, err := uuid.NewV7()
+			if err != nil {
+				c.lgr.Error("create uuid", slog.String("error", err.Error()))
+				continue
+			}
+
+			createNoteEventResp := &pb.SubscribeToEventsResponse_CreatedNote{
+				CreatedNote: &pb.CreateNoteEvent{
+					Uuid:  noteUUID.String(),
+					Title: fmt.Sprintf("Note #%d", noteNum),
+				},
+			}
+
+			resp := &pb.SubscribeToEventsResponse{Payload: createNoteEventResp}
+			err = stream.Send(resp)
+			if err != nil {
+				c.lgr.Error("send response", slog.String("error", err.Error()))
+			}
+		}
+	}
 }

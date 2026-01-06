@@ -39,7 +39,7 @@ func Run(ctx context.Context) error {
 
 	notesUsecase := usecase.NewNotes(lgr, inMemoryStorage)
 
-	grpcController, err := grpccontroller.NewController(notesUsecase)
+	grpcController, err := grpccontroller.NewController(lgr, notesUsecase)
 	if err != nil {
 		lgr.Error("create grpc controller", slog.String("error", err.Error()))
 		return errRunCommand

@@ -24,7 +24,7 @@ var File_api_notes_v1_notes_proto protoreflect.FileDescriptor
 
 const file_api_notes_v1_notes_proto_rawDesc = "" +
 	"\n" +
-	"\x18api/notes/v1/notes.proto\x12\fapi.notes.v1\x1a\x1bapi/notes/v1/messages.proto2\xa6\x03\n" +
+	"\x18api/notes/v1/notes.proto\x12\fapi.notes.v1\x1a\x1bapi/notes/v1/messages.proto2\x90\x04\n" +
 	"\bNotesAPI\x12Q\n" +
 	"\n" +
 	"CreateNote\x12\x1f.api.notes.v1.CreateNoteRequest\x1a .api.notes.v1.CreateNoteResponse\"\x00\x12W\n" +
@@ -33,36 +33,41 @@ const file_api_notes_v1_notes_proto_rawDesc = "" +
 	"\n" +
 	"UpdateNote\x12\x1f.api.notes.v1.UpdateNoteRequest\x1a .api.notes.v1.UpdateNoteResponse\"\x00\x12Q\n" +
 	"\n" +
-	"DeleteNote\x12\x1f.api.notes.v1.DeleteNoteRequest\x1a .api.notes.v1.DeleteNoteResponse\"\x00B?Z=github.com/ArtamonovEvgenii/grpc-course-2025/pkg/api/notes/v1b\x06proto3"
+	"DeleteNote\x12\x1f.api.notes.v1.DeleteNoteRequest\x1a .api.notes.v1.DeleteNoteResponse\"\x00\x12h\n" +
+	"\x11SubscribeToEvents\x12&.api.notes.v1.SubscribeToEventsRequest\x1a'.api.notes.v1.SubscribeToEventsResponse\"\x000\x01B?Z=github.com/ArtamonovEvgenii/grpc-course-2025/pkg/api/notes/v1b\x06proto3"
 
 var file_api_notes_v1_notes_proto_goTypes = []any{
-	(*CreateNoteRequest)(nil),    // 0: api.notes.v1.CreateNoteRequest
-	(*GetNotesListRequest)(nil),  // 1: api.notes.v1.GetNotesListRequest
-	(*GetNoteRequest)(nil),       // 2: api.notes.v1.GetNoteRequest
-	(*UpdateNoteRequest)(nil),    // 3: api.notes.v1.UpdateNoteRequest
-	(*DeleteNoteRequest)(nil),    // 4: api.notes.v1.DeleteNoteRequest
-	(*CreateNoteResponse)(nil),   // 5: api.notes.v1.CreateNoteResponse
-	(*GetNotesListResponse)(nil), // 6: api.notes.v1.GetNotesListResponse
-	(*GetNoteResponse)(nil),      // 7: api.notes.v1.GetNoteResponse
-	(*UpdateNoteResponse)(nil),   // 8: api.notes.v1.UpdateNoteResponse
-	(*DeleteNoteResponse)(nil),   // 9: api.notes.v1.DeleteNoteResponse
+	(*CreateNoteRequest)(nil),         // 0: api.notes.v1.CreateNoteRequest
+	(*GetNotesListRequest)(nil),       // 1: api.notes.v1.GetNotesListRequest
+	(*GetNoteRequest)(nil),            // 2: api.notes.v1.GetNoteRequest
+	(*UpdateNoteRequest)(nil),         // 3: api.notes.v1.UpdateNoteRequest
+	(*DeleteNoteRequest)(nil),         // 4: api.notes.v1.DeleteNoteRequest
+	(*SubscribeToEventsRequest)(nil),  // 5: api.notes.v1.SubscribeToEventsRequest
+	(*CreateNoteResponse)(nil),        // 6: api.notes.v1.CreateNoteResponse
+	(*GetNotesListResponse)(nil),      // 7: api.notes.v1.GetNotesListResponse
+	(*GetNoteResponse)(nil),           // 8: api.notes.v1.GetNoteResponse
+	(*UpdateNoteResponse)(nil),        // 9: api.notes.v1.UpdateNoteResponse
+	(*DeleteNoteResponse)(nil),        // 10: api.notes.v1.DeleteNoteResponse
+	(*SubscribeToEventsResponse)(nil), // 11: api.notes.v1.SubscribeToEventsResponse
 }
 var file_api_notes_v1_notes_proto_depIdxs = []int32{
-	0, // 0: api.notes.v1.NotesAPI.CreateNote:input_type -> api.notes.v1.CreateNoteRequest
-	1, // 1: api.notes.v1.NotesAPI.GetNotesList:input_type -> api.notes.v1.GetNotesListRequest
-	2, // 2: api.notes.v1.NotesAPI.GetNote:input_type -> api.notes.v1.GetNoteRequest
-	3, // 3: api.notes.v1.NotesAPI.UpdateNote:input_type -> api.notes.v1.UpdateNoteRequest
-	4, // 4: api.notes.v1.NotesAPI.DeleteNote:input_type -> api.notes.v1.DeleteNoteRequest
-	5, // 5: api.notes.v1.NotesAPI.CreateNote:output_type -> api.notes.v1.CreateNoteResponse
-	6, // 6: api.notes.v1.NotesAPI.GetNotesList:output_type -> api.notes.v1.GetNotesListResponse
-	7, // 7: api.notes.v1.NotesAPI.GetNote:output_type -> api.notes.v1.GetNoteResponse
-	8, // 8: api.notes.v1.NotesAPI.UpdateNote:output_type -> api.notes.v1.UpdateNoteResponse
-	9, // 9: api.notes.v1.NotesAPI.DeleteNote:output_type -> api.notes.v1.DeleteNoteResponse
-	5, // [5:10] is the sub-list for method output_type
-	0, // [0:5] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	0,  // 0: api.notes.v1.NotesAPI.CreateNote:input_type -> api.notes.v1.CreateNoteRequest
+	1,  // 1: api.notes.v1.NotesAPI.GetNotesList:input_type -> api.notes.v1.GetNotesListRequest
+	2,  // 2: api.notes.v1.NotesAPI.GetNote:input_type -> api.notes.v1.GetNoteRequest
+	3,  // 3: api.notes.v1.NotesAPI.UpdateNote:input_type -> api.notes.v1.UpdateNoteRequest
+	4,  // 4: api.notes.v1.NotesAPI.DeleteNote:input_type -> api.notes.v1.DeleteNoteRequest
+	5,  // 5: api.notes.v1.NotesAPI.SubscribeToEvents:input_type -> api.notes.v1.SubscribeToEventsRequest
+	6,  // 6: api.notes.v1.NotesAPI.CreateNote:output_type -> api.notes.v1.CreateNoteResponse
+	7,  // 7: api.notes.v1.NotesAPI.GetNotesList:output_type -> api.notes.v1.GetNotesListResponse
+	8,  // 8: api.notes.v1.NotesAPI.GetNote:output_type -> api.notes.v1.GetNoteResponse
+	9,  // 9: api.notes.v1.NotesAPI.UpdateNote:output_type -> api.notes.v1.UpdateNoteResponse
+	10, // 10: api.notes.v1.NotesAPI.DeleteNote:output_type -> api.notes.v1.DeleteNoteResponse
+	11, // 11: api.notes.v1.NotesAPI.SubscribeToEvents:output_type -> api.notes.v1.SubscribeToEventsResponse
+	6,  // [6:12] is the sub-list for method output_type
+	0,  // [0:6] is the sub-list for method input_type
+	0,  // [0:0] is the sub-list for extension type_name
+	0,  // [0:0] is the sub-list for extension extendee
+	0,  // [0:0] is the sub-list for field type_name
 }
 
 func init() { file_api_notes_v1_notes_proto_init() }

@@ -13,4 +13,5 @@ service NotesAPI {
   rpc GetNote(GetNoteRequest) returns(GetNoteResponse) {}
   rpc UpdateNote(UpdateNoteRequest) returns(UpdateNoteResponse) {}
   rpc DeleteNote(DeleteNoteRequest) returns(DeleteNoteResponse) {}
+  rpc SubscribeToEvents(SubscribeToEventsRequest) returns(stream SubscribeToEventsResponse) {}
 }

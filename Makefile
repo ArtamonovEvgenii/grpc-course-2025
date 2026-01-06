@@ -19,7 +19,7 @@ generate-api: ### generate grpc related files
 
 
 .PHONY: lint-api
-lint-api:
+lint-api: ### lint api definition using easyp
 	@easyp lint --path api
 
 

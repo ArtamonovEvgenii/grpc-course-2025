@@ -65,3 +65,22 @@ message DeleteNoteRequest {
 }
 
 message DeleteNoteResponse {}
+
+
+message SubscribeToEventsRequest{}
+
+message SubscribeToEventsResponse{
+  oneof payload {
+    HeartbeatEvent heartbeat = 1;
+    CreateNoteEvent created_note = 2;
+  }
+}
+
+message HeartbeatEvent {
+  google.type.DateTime timestamp = 1;
+}
+
+message CreateNoteEvent {
+  string uuid = 1;
+  string title = 2;
+}

@@ -555,6 +555,220 @@ func (*DeleteNoteResponse) Descriptor() ([]byte, []int) {
 	return file_api_notes_v1_messages_proto_rawDescGZIP(), []int{10}
 }
 
+type SubscribeToEventsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SubscribeToEventsRequest) Reset() {
+	*x = SubscribeToEventsRequest{}
+	mi := &file_api_notes_v1_messages_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SubscribeToEventsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SubscribeToEventsRequest) ProtoMessage() {}
+
+func (x *SubscribeToEventsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_notes_v1_messages_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SubscribeToEventsRequest.ProtoReflect.Descriptor instead.
+func (*SubscribeToEventsRequest) Descriptor() ([]byte, []int) {
+	return file_api_notes_v1_messages_proto_rawDescGZIP(), []int{11}
+}
+
+type SubscribeToEventsResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Types that are valid to be assigned to Payload:
+	//
+	//	*SubscribeToEventsResponse_Heartbeat
+	//	*SubscribeToEventsResponse_CreatedNote
+	Payload       isSubscribeToEventsResponse_Payload `protobuf_oneof:"payload"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SubscribeToEventsResponse) Reset() {
+	*x = SubscribeToEventsResponse{}
+	mi := &file_api_notes_v1_messages_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SubscribeToEventsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SubscribeToEventsResponse) ProtoMessage() {}
+
+func (x *SubscribeToEventsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_api_notes_v1_messages_proto_msgTypes[12]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SubscribeToEventsResponse.ProtoReflect.Descriptor instead.
+func (*SubscribeToEventsResponse) Descriptor() ([]byte, []int) {
+	return file_api_notes_v1_messages_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *SubscribeToEventsResponse) GetPayload() isSubscribeToEventsResponse_Payload {
+	if x != nil {
+		return x.Payload
+	}
+	return nil
+}
+
+func (x *SubscribeToEventsResponse) GetHeartbeat() *HeartbeatEvent {
+	if x != nil {
+		if x, ok := x.Payload.(*SubscribeToEventsResponse_Heartbeat); ok {
+			return x.Heartbeat
+		}
+	}
+	return nil
+}
+
+func (x *SubscribeToEventsResponse) GetCreatedNote() *CreateNoteEvent {
+	if x != nil {
+		if x, ok := x.Payload.(*SubscribeToEventsResponse_CreatedNote); ok {
+			return x.CreatedNote
+		}
+	}
+	return nil
+}
+
+type isSubscribeToEventsResponse_Payload interface {
+	isSubscribeToEventsResponse_Payload()
+}
+
+type SubscribeToEventsResponse_Heartbeat struct {
+	Heartbeat *HeartbeatEvent `protobuf:"bytes,1,opt,name=heartbeat,proto3,oneof"`
+}
+
+type SubscribeToEventsResponse_CreatedNote struct {
+	CreatedNote *CreateNoteEvent `protobuf:"bytes,2,opt,name=created_note,json=createdNote,proto3,oneof"`
+}
+
+func (*SubscribeToEventsResponse_Heartbeat) isSubscribeToEventsResponse_Payload() {}
+
+func (*SubscribeToEventsResponse_CreatedNote) isSubscribeToEventsResponse_Payload() {}
+
+type HeartbeatEvent struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Timestamp     *datetime.DateTime     `protobuf:"bytes,1,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *HeartbeatEvent) Reset() {
+	*x = HeartbeatEvent{}
+	mi := &file_api_notes_v1_messages_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *HeartbeatEvent) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*HeartbeatEvent) ProtoMessage() {}
+
+func (x *HeartbeatEvent) ProtoReflect() protoreflect.Message {
+	mi := &file_api_notes_v1_messages_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use HeartbeatEvent.ProtoReflect.Descriptor instead.
+func (*HeartbeatEvent) Descriptor() ([]byte, []int) {
+	return file_api_notes_v1_messages_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *HeartbeatEvent) GetTimestamp() *datetime.DateTime {
+	if x != nil {
+		return x.Timestamp
+	}
+	return nil
+}
+
+type CreateNoteEvent struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Uuid          string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
+	Title         string                 `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateNoteEvent) Reset() {
+	*x = CreateNoteEvent{}
+	mi := &file_api_notes_v1_messages_proto_msgTypes[14]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateNoteEvent) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateNoteEvent) ProtoMessage() {}
+
+func (x *CreateNoteEvent) ProtoReflect() protoreflect.Message {
+	mi := &file_api_notes_v1_messages_proto_msgTypes[14]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateNoteEvent.ProtoReflect.Descriptor instead.
+func (*CreateNoteEvent) Descriptor() ([]byte, []int) {
+	return file_api_notes_v1_messages_proto_rawDescGZIP(), []int{14}
+}
+
+func (x *CreateNoteEvent) GetUuid() string {
+	if x != nil {
+		return x.Uuid
+	}
+	return ""
+}
+
+func (x *CreateNoteEvent) GetTitle() string {
+	if x != nil {
+		return x.Title
+	}
+	return ""
+}
+
 var File_api_notes_v1_messages_proto protoreflect.FileDescriptor
 
 const file_api_notes_v1_messages_proto_rawDesc = "" +
@@ -593,7 +807,17 @@ const file_api_notes_v1_messages_proto_rawDesc = "" +
 	"\x12UpdateNoteResponse\"'\n" +
 	"\x11DeleteNoteRequest\x12\x12\n" +
 	"\x04uuid\x18\x01 \x01(\tR\x04uuid\"\x14\n" +
-	"\x12DeleteNoteResponseB?Z=github.com/ArtamonovEvgenii/grpc-course-2025/pkg/api/notes/v1b\x06proto3"
+	"\x12DeleteNoteResponse\"\x1a\n" +
+	"\x18SubscribeToEventsRequest\"\xa8\x01\n" +
+	"\x19SubscribeToEventsResponse\x12<\n" +
+	"\theartbeat\x18\x01 \x01(\v2\x1c.api.notes.v1.HeartbeatEventH\x00R\theartbeat\x12B\n" +
+	"\fcreated_note\x18\x02 \x01(\v2\x1d.api.notes.v1.CreateNoteEventH\x00R\vcreatedNoteB\t\n" +
+	"\apayload\"E\n" +
+	"\x0eHeartbeatEvent\x123\n" +
+	"\ttimestamp\x18\x01 \x01(\v2\x15.google.type.DateTimeR\ttimestamp\";\n" +
+	"\x0fCreateNoteEvent\x12\x12\n" +
+	"\x04uuid\x18\x01 \x01(\tR\x04uuid\x12\x14\n" +
+	"\x05title\x18\x02 \x01(\tR\x05titleB?Z=github.com/ArtamonovEvgenii/grpc-course-2025/pkg/api/notes/v1b\x06proto3"
 
 var (
 	file_api_notes_v1_messages_proto_rawDescOnce sync.Once
@@ -607,31 +831,38 @@ func file_api_notes_v1_messages_proto_rawDescGZIP() []byte {
 	return file_api_notes_v1_messages_proto_rawDescData
 }
 
-var file_api_notes_v1_messages_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
+var file_api_notes_v1_messages_proto_msgTypes = make([]protoimpl.MessageInfo, 15)
 var file_api_notes_v1_messages_proto_goTypes = []any{
-	(*CreateNoteRequest)(nil),        // 0: api.notes.v1.CreateNoteRequest
-	(*CreateNoteResponse)(nil),       // 1: api.notes.v1.CreateNoteResponse
-	(*GetNotesListRequest)(nil),      // 2: api.notes.v1.GetNotesListRequest
-	(*GetNotesListResponseNote)(nil), // 3: api.notes.v1.GetNotesListResponseNote
-	(*GetNotesListResponse)(nil),     // 4: api.notes.v1.GetNotesListResponse
-	(*GetNoteRequest)(nil),           // 5: api.notes.v1.GetNoteRequest
-	(*GetNoteResponse)(nil),          // 6: api.notes.v1.GetNoteResponse
-	(*UpdateNoteRequest)(nil),        // 7: api.notes.v1.UpdateNoteRequest
-	(*UpdateNoteResponse)(nil),       // 8: api.notes.v1.UpdateNoteResponse
-	(*DeleteNoteRequest)(nil),        // 9: api.notes.v1.DeleteNoteRequest
-	(*DeleteNoteResponse)(nil),       // 10: api.notes.v1.DeleteNoteResponse
-	(*datetime.DateTime)(nil),        // 11: google.type.DateTime
+	(*CreateNoteRequest)(nil),         // 0: api.notes.v1.CreateNoteRequest
+	(*CreateNoteResponse)(nil),        // 1: api.notes.v1.CreateNoteResponse
+	(*GetNotesListRequest)(nil),       // 2: api.notes.v1.GetNotesListRequest
+	(*GetNotesListResponseNote)(nil),  // 3: api.notes.v1.GetNotesListResponseNote
+	(*GetNotesListResponse)(nil),      // 4: api.notes.v1.GetNotesListResponse
+	(*GetNoteRequest)(nil),            // 5: api.notes.v1.GetNoteRequest
+	(*GetNoteResponse)(nil),           // 6: api.notes.v1.GetNoteResponse
+	(*UpdateNoteRequest)(nil),         // 7: api.notes.v1.UpdateNoteRequest
+	(*UpdateNoteResponse)(nil),        // 8: api.notes.v1.UpdateNoteResponse
+	(*DeleteNoteRequest)(nil),         // 9: api.notes.v1.DeleteNoteRequest
+	(*DeleteNoteResponse)(nil),        // 10: api.notes.v1.DeleteNoteResponse
+	(*SubscribeToEventsRequest)(nil),  // 11: api.notes.v1.SubscribeToEventsRequest
+	(*SubscribeToEventsResponse)(nil), // 12: api.notes.v1.SubscribeToEventsResponse
+	(*HeartbeatEvent)(nil),            // 13: api.notes.v1.HeartbeatEvent
+	(*CreateNoteEvent)(nil),           // 14: api.notes.v1.CreateNoteEvent
+	(*datetime.DateTime)(nil),         // 15: google.type.DateTime
 }
 var file_api_notes_v1_messages_proto_depIdxs = []int32{
-	11, // 0: api.notes.v1.GetNotesListResponseNote.updated_at:type_name -> google.type.DateTime
+	15, // 0: api.notes.v1.GetNotesListResponseNote.updated_at:type_name -> google.type.DateTime
 	3,  // 1: api.notes.v1.GetNotesListResponse.notes:type_name -> api.notes.v1.GetNotesListResponseNote
-	11, // 2: api.notes.v1.GetNoteResponse.crated_at:type_name -> google.type.DateTime
-	11, // 3: api.notes.v1.GetNoteResponse.updated_at:type_name -> google.type.DateTime
-	4,  // [4:4] is the sub-list for method output_type
-	4,  // [4:4] is the sub-list for method input_type
-	4,  // [4:4] is the sub-list for extension type_name
-	4,  // [4:4] is the sub-list for extension extendee
-	0,  // [0:4] is the sub-list for field type_name
+	15, // 2: api.notes.v1.GetNoteResponse.crated_at:type_name -> google.type.DateTime
+	15, // 3: api.notes.v1.GetNoteResponse.updated_at:type_name -> google.type.DateTime
+	13, // 4: api.notes.v1.SubscribeToEventsResponse.heartbeat:type_name -> api.notes.v1.HeartbeatEvent
+	14, // 5: api.notes.v1.SubscribeToEventsResponse.created_note:type_name -> api.notes.v1.CreateNoteEvent
+	15, // 6: api.notes.v1.HeartbeatEvent.timestamp:type_name -> google.type.DateTime
+	7,  // [7:7] is the sub-list for method output_type
+	7,  // [7:7] is the sub-list for method input_type
+	7,  // [7:7] is the sub-list for extension type_name
+	7,  // [7:7] is the sub-list for extension extendee
+	0,  // [0:7] is the sub-list for field type_name
 }
 
 func init() { file_api_notes_v1_messages_proto_init() }
@@ -639,13 +870,17 @@ func file_api_notes_v1_messages_proto_init() {
 	if File_api_notes_v1_messages_proto != nil {
 		return
 	}
+	file_api_notes_v1_messages_proto_msgTypes[12].OneofWrappers = []any{
+		(*SubscribeToEventsResponse_Heartbeat)(nil),
+		(*SubscribeToEventsResponse_CreatedNote)(nil),
+	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_api_notes_v1_messages_proto_rawDesc), len(file_api_notes_v1_messages_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   11,
+			NumMessages:   15,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
