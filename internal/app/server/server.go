@@ -52,7 +52,7 @@ func Run(ctx context.Context) error {
 		return errRunCommand
 	}
 
-	grpcv1.RegisterNotesServer(grpcServer.Server(), grpcController)
+	grpcv1.RegisterNotesAPIServer(grpcServer.Server(), grpcController)
 	reflection.Register(grpcServer.Server())
 
 	lgr.Info("service starting")

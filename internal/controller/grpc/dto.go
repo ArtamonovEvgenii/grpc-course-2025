@@ -1,10 +1,17 @@
 package grpc
 
 import (
+	"errors"
+	"fmt"
 	"time"
 
 	"google.golang.org/genproto/googleapis/type/datetime"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/durationpb"
+
+	"github.com/ArtamonovEvgenii/grpc-course-2025/internal/entity"
+	pb "github.com/ArtamonovEvgenii/grpc-course-2025/pkg/api/notes/v1"
 )
 
 func responseDateTime(t time.Time) *datetime.DateTime {
@@ -28,4 +35,30 @@ func responseDateTime(t time.Time) *datetime.DateTime {
 		Nanos:      int32(t.Nanosecond()),
 		TimeOffset: tz,
 	}
+}
+
+func domainToTransportError(err error) error {
+	if errors.Is(err, entity.ErrNoteNotFound) {
+		respStatus := status.New(codes.Internal, entity.ErrNoteNotFound.Error())
+
+		descriptionText := err.Error()
+		fmt.Println(descriptionText)
+
+		errDetails := &pb.ErrorDetails{
+			Code:        pb.ErrorCode_ERROR_CODE_NOTE_NOT_FOUND,
+			Description: err.Error(),
+		}
+
+		var errAddDetails error
+		respStatus, errAddDetails = respStatus.WithDetails(errDetails)
+		if errAddDetails != nil {
+			return errors.Join(err, errAddDetails)
+		}
+
+		return respStatus.Err()
+	}
+
+	respStatus := status.New(codes.Internal, err.Error())
+
+	return respStatus.Err()
 }

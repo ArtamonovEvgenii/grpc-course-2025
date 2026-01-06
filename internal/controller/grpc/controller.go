@@ -21,7 +21,7 @@ type notesUsecase interface {
 }
 
 type Controller struct {
-	pb.UnimplementedNotesServer
+	pb.UnimplementedNotesAPIServer
 	notesUsecase notesUsecase
 }
 
@@ -97,7 +97,7 @@ func (c *Controller) GetNote(
 
 	note, err := c.notesUsecase.GetNote(ctx, entity.NoteUUID(noteUUID))
 	if err != nil {
-		return nil, status.Errorf(codes.Internal, err.Error())
+		return nil, domainToTransportError(err)
 	}
 
 	resp := &pb.GetNoteResponse{

@@ -28,7 +28,7 @@ func (s *Storage) InsertNote(ctx context.Context, note entity.Note) error {
 	defer s.mutex.Unlock()
 
 	if _, exist := s.data[note.UUID]; exist {
-		return fmt.Errorf("note already exists")
+		return entity.ErrNoteAlreadyExist
 	}
 
 	s.data[note.UUID] = note
@@ -60,7 +60,7 @@ func (s *Storage) GetNote(_ context.Context, noteUUID entity.NoteUUID) (entity.N
 
 	note, exists := s.data[noteUUID]
 	if !exists {
-		return entity.Note{}, fmt.Errorf("note does not exist")
+		return entity.Note{}, fmt.Errorf("%w: uuid %s", entity.ErrNoteNotFound, noteUUID.String())
 	}
 
 	return note, nil
@@ -72,7 +72,7 @@ func (s *Storage) UpdateNote(_ context.Context, noteUpdate entity.NoteUpdateData
 
 	prevNote, exist := s.data[noteUpdate.UUID]
 	if !exist {
-		return fmt.Errorf("note does not exist")
+		return fmt.Errorf("%w: uuid %s", entity.ErrNoteNotFound, noteUpdate.UUID.String())
 	}
 
 	newNote := entity.Note{
@@ -94,7 +94,7 @@ func (s *Storage) DeleteNote(_ context.Context, noteUUID entity.NoteUUID) error 
 
 	_, exist := s.data[noteUUID]
 	if !exist {
-		return fmt.Errorf("note does not exist")
+		return fmt.Errorf("%w: uuid %s", entity.ErrNoteNotFound, noteUUID.String())
 	}
 
 	delete(s.data, noteUUID)
