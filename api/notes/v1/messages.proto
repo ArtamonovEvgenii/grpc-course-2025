@@ -92,3 +92,13 @@ message UploadMetricsRequest {
 message UploadMetricsResponse {
   int64 sum = 1;
 }
+
+message ChatMessageRequest {
+  string correlation_id = 1;
+  string text = 2;
+}
+
+message ChatMessageResponse{
+  string correlation_id = 1;
+  string text = 2;
+}

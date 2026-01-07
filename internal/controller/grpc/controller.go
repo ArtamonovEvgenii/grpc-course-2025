@@ -10,6 +10,7 @@ import (
 
 	"buf.build/go/protovalidate"
 	"github.com/google/uuid"
+	"golang.org/x/sync/errgroup"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
@@ -226,8 +227,8 @@ func (c *Controller) SubscribeToEvents(
 }
 
 func (c *Controller) UploadMetrics(stream pb.NotesAPI_UploadMetricsServer) error {
-	c.lgr.Info("start stream processing")
-	defer c.lgr.Info("end stream processing")
+	c.lgr.Info("metrics start stream processing")
+	defer c.lgr.Info("metrics end stream processing")
 
 	ctx := stream.Context()
 
@@ -263,4 +264,133 @@ func (c *Controller) UploadMetrics(stream pb.NotesAPI_UploadMetricsServer) error
 	}
 
 	return nil
+}
+
+func (c *Controller) Chat(stream pb.NotesAPI_ChatServer) error {
+	c.lgr.Info("chat start stream processing")
+	defer c.lgr.Info("chat end stream processing")
+
+	messagesCh := make(chan entity.ChatMessage, 10)
+	defer close(messagesCh)
+
+	ctx := stream.Context()
+	eg, egCtx := errgroup.WithContext(ctx)
+	eg.Go(c.receiveChatMessages(egCtx, stream, messagesCh))
+	eg.Go(c.responseChatMessages(egCtx, stream, messagesCh))
+	eg.Go(c.heartbeatChatMessages(egCtx, stream))
+	err := eg.Wait()
+	if err != nil {
+		return fmt.Errorf("err group wait: %w", err)
+	}
+
+	return nil
+}
+
+func (c *Controller) receiveChatMessages(
+	ctx context.Context,
+	stream pb.NotesAPI_ChatServer,
+	ch chan<- entity.ChatMessage,
+) func() error {
+	return func() error {
+		c.lgr.Info("receive chat messages processing start")
+		defer c.lgr.Info("receive chat messages processing stop")
+
+		for {
+			if ctx.Err() != nil {
+				c.lgr.Info("stream context error", slog.String("error", ctx.Err().Error()))
+				break
+			}
+
+			req, err := stream.Recv()
+			if err != nil {
+				if errors.Is(err, io.EOF) {
+					c.lgr.Info("client close stream")
+					break
+				}
+
+				c.lgr.Error("receive message from client", slog.String("error", err.Error()))
+				continue
+			}
+
+			c.lgr.Info("receive message", slog.String("correlation_id", req.CorrelationId))
+
+			msg := entity.ChatMessage{
+				CorrelationID: req.CorrelationId,
+				Text:          req.Text,
+			}
+
+			select {
+			case ch <- msg:
+				c.lgr.Debug("put message to channel", slog.String("correlation_id", req.CorrelationId))
+			default:
+				c.lgr.Error("put message to channel", slog.String("correlation_id", req.CorrelationId))
+			}
+		}
+
+		return nil
+	}
+}
+
+func (c *Controller) responseChatMessages(
+	ctx context.Context,
+	stream pb.NotesAPI_ChatServer,
+	ch <-chan entity.ChatMessage,
+) func() error {
+	return func() error {
+		c.lgr.Info("response chat messages processing start")
+		defer c.lgr.Info("response chat messages processing stop")
+
+		for {
+			select {
+			case <-ctx.Done():
+				return nil
+			case msg, ok := <-ch:
+				if !ok {
+					return fmt.Errorf("message channel closed")
+				}
+
+				time.Sleep(1 * time.Second)
+				respMsg := &pb.ChatMessageResponse{
+					CorrelationId: msg.CorrelationID,
+					Text:          fmt.Sprintf("response for: %s", msg.Text),
+				}
+				err := stream.Send(respMsg)
+				if err != nil {
+					c.lgr.Error("send response", slog.String("error", err.Error()))
+				}
+			}
+		}
+	}
+}
+
+func (c *Controller) heartbeatChatMessages(
+	ctx context.Context,
+	stream pb.NotesAPI_ChatServer,
+) func() error {
+	return func() error {
+		c.lgr.Info("heartbeat chat messages processing start")
+		defer c.lgr.Info("heartbeat chat messages processing stop")
+
+		ticker := time.NewTicker(5 * time.Second)
+		defer ticker.Stop()
+
+		var heartbeatNum int
+
+		for {
+			select {
+			case <-ctx.Done():
+				return nil
+			case <-ticker.C:
+				heartbeatNum++
+				heartbeatMsg := &pb.ChatMessageResponse{
+					CorrelationId: "none",
+					Text:          fmt.Sprintf("heartbeat: %d", heartbeatNum),
+				}
+				err := stream.Send(heartbeatMsg)
+				if err != nil {
+					c.lgr.Error("send heartbeat message", slog.String("error", err.Error()))
+				}
+			}
+		}
+	}
 }

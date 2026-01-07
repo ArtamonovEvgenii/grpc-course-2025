@@ -15,4 +15,5 @@ service NotesAPI {
   rpc DeleteNote(DeleteNoteRequest) returns(DeleteNoteResponse) {}
   rpc SubscribeToEvents(SubscribeToEventsRequest) returns(stream SubscribeToEventsResponse) {}
   rpc UploadMetrics(stream UploadMetricsRequest) returns(UploadMetricsResponse) {}
+  rpc Chat(stream ChatMessageRequest) returns(stream ChatMessageResponse) {}
 }

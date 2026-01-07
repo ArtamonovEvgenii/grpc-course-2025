@@ -26,6 +26,7 @@ const (
 	NotesAPI_DeleteNote_FullMethodName        = "/api.notes.v1.NotesAPI/DeleteNote"
 	NotesAPI_SubscribeToEvents_FullMethodName = "/api.notes.v1.NotesAPI/SubscribeToEvents"
 	NotesAPI_UploadMetrics_FullMethodName     = "/api.notes.v1.NotesAPI/UploadMetrics"
+	NotesAPI_Chat_FullMethodName              = "/api.notes.v1.NotesAPI/Chat"
 )
 
 // NotesAPIClient is the client API for NotesAPI service.
@@ -39,6 +40,7 @@ type NotesAPIClient interface {
 	DeleteNote(ctx context.Context, in *DeleteNoteRequest, opts ...grpc.CallOption) (*DeleteNoteResponse, error)
 	SubscribeToEvents(ctx context.Context, in *SubscribeToEventsRequest, opts ...grpc.CallOption) (NotesAPI_SubscribeToEventsClient, error)
 	UploadMetrics(ctx context.Context, opts ...grpc.CallOption) (NotesAPI_UploadMetricsClient, error)
+	Chat(ctx context.Context, opts ...grpc.CallOption) (NotesAPI_ChatClient, error)
 }
 
 type notesAPIClient struct {
@@ -160,6 +162,37 @@ func (x *notesAPIUploadMetricsClient) CloseAndRecv() (*UploadMetricsResponse, er
 	return m, nil
 }
 
+func (c *notesAPIClient) Chat(ctx context.Context, opts ...grpc.CallOption) (NotesAPI_ChatClient, error) {
+	stream, err := c.cc.NewStream(ctx, &NotesAPI_ServiceDesc.Streams[2], NotesAPI_Chat_FullMethodName, opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &notesAPIChatClient{stream}
+	return x, nil
+}
+
+type NotesAPI_ChatClient interface {
+	Send(*ChatMessageRequest) error
+	Recv() (*ChatMessageResponse, error)
+	grpc.ClientStream
+}
+
+type notesAPIChatClient struct {
+	grpc.ClientStream
+}
+
+func (x *notesAPIChatClient) Send(m *ChatMessageRequest) error {
+	return x.ClientStream.SendMsg(m)
+}
+
+func (x *notesAPIChatClient) Recv() (*ChatMessageResponse, error) {
+	m := new(ChatMessageResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 // NotesAPIServer is the server API for NotesAPI service.
 // All implementations should embed UnimplementedNotesAPIServer
 // for forward compatibility
@@ -171,6 +204,7 @@ type NotesAPIServer interface {
 	DeleteNote(context.Context, *DeleteNoteRequest) (*DeleteNoteResponse, error)
 	SubscribeToEvents(*SubscribeToEventsRequest, NotesAPI_SubscribeToEventsServer) error
 	UploadMetrics(NotesAPI_UploadMetricsServer) error
+	Chat(NotesAPI_ChatServer) error
 }
 
 // UnimplementedNotesAPIServer should be embedded to have forward compatible implementations.
@@ -197,6 +231,9 @@ func (UnimplementedNotesAPIServer) SubscribeToEvents(*SubscribeToEventsRequest, 
 }
 func (UnimplementedNotesAPIServer) UploadMetrics(NotesAPI_UploadMetricsServer) error {
 	return status.Errorf(codes.Unimplemented, "method UploadMetrics not implemented")
+}
+func (UnimplementedNotesAPIServer) Chat(NotesAPI_ChatServer) error {
+	return status.Errorf(codes.Unimplemented, "method Chat not implemented")
 }
 
 // UnsafeNotesAPIServer may be embedded to opt out of forward compatibility for this service.
@@ -347,6 +384,32 @@ func (x *notesAPIUploadMetricsServer) Recv() (*UploadMetricsRequest, error) {
 	return m, nil
 }
 
+func _NotesAPI_Chat_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(NotesAPIServer).Chat(&notesAPIChatServer{stream})
+}
+
+type NotesAPI_ChatServer interface {
+	Send(*ChatMessageResponse) error
+	Recv() (*ChatMessageRequest, error)
+	grpc.ServerStream
+}
+
+type notesAPIChatServer struct {
+	grpc.ServerStream
+}
+
+func (x *notesAPIChatServer) Send(m *ChatMessageResponse) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func (x *notesAPIChatServer) Recv() (*ChatMessageRequest, error) {
+	m := new(ChatMessageRequest)
+	if err := x.ServerStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 // NotesAPI_ServiceDesc is the grpc.ServiceDesc for NotesAPI service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -384,6 +447,12 @@ var NotesAPI_ServiceDesc = grpc.ServiceDesc{
 		{
 			StreamName:    "UploadMetrics",
 			Handler:       _NotesAPI_UploadMetrics_Handler,
+			ClientStreams: true,
+		},
+		{
+			StreamName:    "Chat",
+			Handler:       _NotesAPI_Chat_Handler,
+			ServerStreams: true,
 			ClientStreams: true,
 		},
 	},

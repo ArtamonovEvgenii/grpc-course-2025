@@ -857,6 +857,110 @@ func (x *UploadMetricsResponse) GetSum() int64 {
 	return 0
 }
 
+type ChatMessageRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	CorrelationId string                 `protobuf:"bytes,1,opt,name=correlation_id,json=correlationId,proto3" json:"correlation_id,omitempty"`
+	Text          string                 `protobuf:"bytes,2,opt,name=text,proto3" json:"text,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ChatMessageRequest) Reset() {
+	*x = ChatMessageRequest{}
+	mi := &file_api_notes_v1_messages_proto_msgTypes[17]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ChatMessageRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ChatMessageRequest) ProtoMessage() {}
+
+func (x *ChatMessageRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_notes_v1_messages_proto_msgTypes[17]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ChatMessageRequest.ProtoReflect.Descriptor instead.
+func (*ChatMessageRequest) Descriptor() ([]byte, []int) {
+	return file_api_notes_v1_messages_proto_rawDescGZIP(), []int{17}
+}
+
+func (x *ChatMessageRequest) GetCorrelationId() string {
+	if x != nil {
+		return x.CorrelationId
+	}
+	return ""
+}
+
+func (x *ChatMessageRequest) GetText() string {
+	if x != nil {
+		return x.Text
+	}
+	return ""
+}
+
+type ChatMessageResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	CorrelationId string                 `protobuf:"bytes,1,opt,name=correlation_id,json=correlationId,proto3" json:"correlation_id,omitempty"`
+	Text          string                 `protobuf:"bytes,2,opt,name=text,proto3" json:"text,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ChatMessageResponse) Reset() {
+	*x = ChatMessageResponse{}
+	mi := &file_api_notes_v1_messages_proto_msgTypes[18]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ChatMessageResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ChatMessageResponse) ProtoMessage() {}
+
+func (x *ChatMessageResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_api_notes_v1_messages_proto_msgTypes[18]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ChatMessageResponse.ProtoReflect.Descriptor instead.
+func (*ChatMessageResponse) Descriptor() ([]byte, []int) {
+	return file_api_notes_v1_messages_proto_rawDescGZIP(), []int{18}
+}
+
+func (x *ChatMessageResponse) GetCorrelationId() string {
+	if x != nil {
+		return x.CorrelationId
+	}
+	return ""
+}
+
+func (x *ChatMessageResponse) GetText() string {
+	if x != nil {
+		return x.Text
+	}
+	return ""
+}
+
 var File_api_notes_v1_messages_proto protoreflect.FileDescriptor
 
 const file_api_notes_v1_messages_proto_rawDesc = "" +
@@ -909,7 +1013,13 @@ const file_api_notes_v1_messages_proto_rawDesc = "" +
 	"\x14UploadMetricsRequest\x12\x14\n" +
 	"\x05value\x18\x01 \x01(\x03R\x05value\")\n" +
 	"\x15UploadMetricsResponse\x12\x10\n" +
-	"\x03sum\x18\x01 \x01(\x03R\x03sumB?Z=github.com/ArtamonovEvgenii/grpc-course-2025/pkg/api/notes/v1b\x06proto3"
+	"\x03sum\x18\x01 \x01(\x03R\x03sum\"O\n" +
+	"\x12ChatMessageRequest\x12%\n" +
+	"\x0ecorrelation_id\x18\x01 \x01(\tR\rcorrelationId\x12\x12\n" +
+	"\x04text\x18\x02 \x01(\tR\x04text\"P\n" +
+	"\x13ChatMessageResponse\x12%\n" +
+	"\x0ecorrelation_id\x18\x01 \x01(\tR\rcorrelationId\x12\x12\n" +
+	"\x04text\x18\x02 \x01(\tR\x04textB?Z=github.com/ArtamonovEvgenii/grpc-course-2025/pkg/api/notes/v1b\x06proto3"
 
 var (
 	file_api_notes_v1_messages_proto_rawDescOnce sync.Once
@@ -923,7 +1033,7 @@ func file_api_notes_v1_messages_proto_rawDescGZIP() []byte {
 	return file_api_notes_v1_messages_proto_rawDescData
 }
 
-var file_api_notes_v1_messages_proto_msgTypes = make([]protoimpl.MessageInfo, 17)
+var file_api_notes_v1_messages_proto_msgTypes = make([]protoimpl.MessageInfo, 19)
 var file_api_notes_v1_messages_proto_goTypes = []any{
 	(*CreateNoteRequest)(nil),         // 0: api.notes.v1.CreateNoteRequest
 	(*CreateNoteResponse)(nil),        // 1: api.notes.v1.CreateNoteResponse
@@ -942,16 +1052,18 @@ var file_api_notes_v1_messages_proto_goTypes = []any{
 	(*CreateNoteEvent)(nil),           // 14: api.notes.v1.CreateNoteEvent
 	(*UploadMetricsRequest)(nil),      // 15: api.notes.v1.UploadMetricsRequest
 	(*UploadMetricsResponse)(nil),     // 16: api.notes.v1.UploadMetricsResponse
-	(*datetime.DateTime)(nil),         // 17: google.type.DateTime
+	(*ChatMessageRequest)(nil),        // 17: api.notes.v1.ChatMessageRequest
+	(*ChatMessageResponse)(nil),       // 18: api.notes.v1.ChatMessageResponse
+	(*datetime.DateTime)(nil),         // 19: google.type.DateTime
 }
 var file_api_notes_v1_messages_proto_depIdxs = []int32{
-	17, // 0: api.notes.v1.GetNotesListResponseNote.updated_at:type_name -> google.type.DateTime
+	19, // 0: api.notes.v1.GetNotesListResponseNote.updated_at:type_name -> google.type.DateTime
 	3,  // 1: api.notes.v1.GetNotesListResponse.notes:type_name -> api.notes.v1.GetNotesListResponseNote
-	17, // 2: api.notes.v1.GetNoteResponse.crated_at:type_name -> google.type.DateTime
-	17, // 3: api.notes.v1.GetNoteResponse.updated_at:type_name -> google.type.DateTime
+	19, // 2: api.notes.v1.GetNoteResponse.crated_at:type_name -> google.type.DateTime
+	19, // 3: api.notes.v1.GetNoteResponse.updated_at:type_name -> google.type.DateTime
 	13, // 4: api.notes.v1.SubscribeToEventsResponse.heartbeat:type_name -> api.notes.v1.HeartbeatEvent
 	14, // 5: api.notes.v1.SubscribeToEventsResponse.created_note:type_name -> api.notes.v1.CreateNoteEvent
-	17, // 6: api.notes.v1.HeartbeatEvent.timestamp:type_name -> google.type.DateTime
+	19, // 6: api.notes.v1.HeartbeatEvent.timestamp:type_name -> google.type.DateTime
 	7,  // [7:7] is the sub-list for method output_type
 	7,  // [7:7] is the sub-list for method input_type
 	7,  // [7:7] is the sub-list for extension type_name
@@ -974,7 +1086,7 @@ func file_api_notes_v1_messages_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_api_notes_v1_messages_proto_rawDesc), len(file_api_notes_v1_messages_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   17,
+			NumMessages:   19,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
