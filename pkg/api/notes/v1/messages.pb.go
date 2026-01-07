@@ -1114,25 +1114,25 @@ const file_api_notes_v1_messages_proto_rawDesc = "" +
 	"\n" +
 	"updated_at\x18\x03 \x01(\v2\x15.google.type.DateTimeR\tupdatedAt\"T\n" +
 	"\x14GetNotesListResponse\x12<\n" +
-	"\x05notes\x18\x01 \x03(\v2&.api.notes.v1.GetNotesListResponseNoteR\x05notes\"$\n" +
-	"\x0eGetNoteRequest\x12\x12\n" +
-	"\x04uuid\x18\x01 \x01(\tR\x04uuid\"\xb9\x01\n" +
+	"\x05notes\x18\x01 \x03(\v2&.api.notes.v1.GetNotesListResponseNoteR\x05notes\".\n" +
+	"\x0eGetNoteRequest\x12\x1c\n" +
+	"\x04uuid\x18\x01 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\x04uuid\"\xb9\x01\n" +
 	"\x0fGetNoteResponse\x12\x12\n" +
 	"\x04uuid\x18\x01 \x01(\tR\x04uuid\x12\x14\n" +
 	"\x05title\x18\x02 \x01(\tR\x05title\x12\x12\n" +
 	"\x04text\x18\x03 \x01(\tR\x04text\x122\n" +
 	"\tcrated_at\x18\x04 \x01(\v2\x15.google.type.DateTimeR\bcratedAt\x124\n" +
 	"\n" +
-	"updated_at\x18\x05 \x01(\v2\x15.google.type.DateTimeR\tupdatedAt\"f\n" +
-	"\x11UpdateNoteRequest\x12\x12\n" +
-	"\x04uuid\x18\x01 \x01(\tR\x04uuid\x12 \n" +
+	"updated_at\x18\x05 \x01(\v2\x15.google.type.DateTimeR\tupdatedAt\"p\n" +
+	"\x11UpdateNoteRequest\x12\x1c\n" +
+	"\x04uuid\x18\x01 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\x04uuid\x12 \n" +
 	"\x05title\x18\x02 \x01(\tB\n" +
 	"\xbaH\ar\x05\x10\x05\x18\xff\x01R\x05title\x12\x1b\n" +
 	"\x04text\x18\x03 \x01(\tB\a\xbaH\x04r\x02\x10\n" +
 	"R\x04text\"\x14\n" +
-	"\x12UpdateNoteResponse\"'\n" +
-	"\x11DeleteNoteRequest\x12\x12\n" +
-	"\x04uuid\x18\x01 \x01(\tR\x04uuid\"\x14\n" +
+	"\x12UpdateNoteResponse\"1\n" +
+	"\x11DeleteNoteRequest\x12\x1c\n" +
+	"\x04uuid\x18\x01 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\x04uuid\"\x14\n" +
 	"\x12DeleteNoteResponse\"\x1a\n" +
 	"\x18SubscribeToEventsRequest\"\xa8\x01\n" +
 	"\x19SubscribeToEventsResponse\x12<\n" +
