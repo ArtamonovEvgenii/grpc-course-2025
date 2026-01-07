@@ -2,7 +2,9 @@ package grpc
 
 import (
 	"context"
+	"errors"
 	"fmt"
+	"io"
 	"log/slog"
 	"time"
 
@@ -221,4 +223,44 @@ func (c *Controller) SubscribeToEvents(
 			}
 		}
 	}
+}
+
+func (c *Controller) UploadMetrics(stream pb.NotesAPI_UploadMetricsServer) error {
+	c.lgr.Info("start stream processing")
+	defer c.lgr.Info("end stream processing")
+
+	ctx := stream.Context()
+
+	var metricsSum int64
+
+	for {
+		if ctx.Err() != nil {
+			c.lgr.Info("stream context error", slog.String("error", ctx.Err().Error()))
+			break
+		}
+
+		req, err := stream.Recv()
+		if err != nil {
+			if errors.Is(err, io.EOF) {
+				c.lgr.Info("client close stream")
+				break
+			}
+
+			c.lgr.Error("receive message from client", slog.String("error", err.Error()))
+			continue
+		}
+
+		c.lgr.Info("receive metric", slog.Int64("value", req.Value))
+		metricsSum += req.Value
+	}
+
+	resp := &pb.UploadMetricsResponse{
+		Sum: metricsSum,
+	}
+	err := stream.SendAndClose(resp)
+	if err != nil {
+		return fmt.Errorf("send response: %w", err)
+	}
+
+	return nil
 }

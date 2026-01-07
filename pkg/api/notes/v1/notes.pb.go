@@ -24,7 +24,7 @@ var File_api_notes_v1_notes_proto protoreflect.FileDescriptor
 
 const file_api_notes_v1_notes_proto_rawDesc = "" +
 	"\n" +
-	"\x18api/notes/v1/notes.proto\x12\fapi.notes.v1\x1a\x1bapi/notes/v1/messages.proto2\x90\x04\n" +
+	"\x18api/notes/v1/notes.proto\x12\fapi.notes.v1\x1a\x1bapi/notes/v1/messages.proto2\xee\x04\n" +
 	"\bNotesAPI\x12Q\n" +
 	"\n" +
 	"CreateNote\x12\x1f.api.notes.v1.CreateNoteRequest\x1a .api.notes.v1.CreateNoteResponse\"\x00\x12W\n" +
@@ -34,7 +34,8 @@ const file_api_notes_v1_notes_proto_rawDesc = "" +
 	"UpdateNote\x12\x1f.api.notes.v1.UpdateNoteRequest\x1a .api.notes.v1.UpdateNoteResponse\"\x00\x12Q\n" +
 	"\n" +
 	"DeleteNote\x12\x1f.api.notes.v1.DeleteNoteRequest\x1a .api.notes.v1.DeleteNoteResponse\"\x00\x12h\n" +
-	"\x11SubscribeToEvents\x12&.api.notes.v1.SubscribeToEventsRequest\x1a'.api.notes.v1.SubscribeToEventsResponse\"\x000\x01B?Z=github.com/ArtamonovEvgenii/grpc-course-2025/pkg/api/notes/v1b\x06proto3"
+	"\x11SubscribeToEvents\x12&.api.notes.v1.SubscribeToEventsRequest\x1a'.api.notes.v1.SubscribeToEventsResponse\"\x000\x01\x12\\\n" +
+	"\rUploadMetrics\x12\".api.notes.v1.UploadMetricsRequest\x1a#.api.notes.v1.UploadMetricsResponse\"\x00(\x01B?Z=github.com/ArtamonovEvgenii/grpc-course-2025/pkg/api/notes/v1b\x06proto3"
 
 var file_api_notes_v1_notes_proto_goTypes = []any{
 	(*CreateNoteRequest)(nil),         // 0: api.notes.v1.CreateNoteRequest
@@ -43,12 +44,14 @@ var file_api_notes_v1_notes_proto_goTypes = []any{
 	(*UpdateNoteRequest)(nil),         // 3: api.notes.v1.UpdateNoteRequest
 	(*DeleteNoteRequest)(nil),         // 4: api.notes.v1.DeleteNoteRequest
 	(*SubscribeToEventsRequest)(nil),  // 5: api.notes.v1.SubscribeToEventsRequest
-	(*CreateNoteResponse)(nil),        // 6: api.notes.v1.CreateNoteResponse
-	(*GetNotesListResponse)(nil),      // 7: api.notes.v1.GetNotesListResponse
-	(*GetNoteResponse)(nil),           // 8: api.notes.v1.GetNoteResponse
-	(*UpdateNoteResponse)(nil),        // 9: api.notes.v1.UpdateNoteResponse
-	(*DeleteNoteResponse)(nil),        // 10: api.notes.v1.DeleteNoteResponse
-	(*SubscribeToEventsResponse)(nil), // 11: api.notes.v1.SubscribeToEventsResponse
+	(*UploadMetricsRequest)(nil),      // 6: api.notes.v1.UploadMetricsRequest
+	(*CreateNoteResponse)(nil),        // 7: api.notes.v1.CreateNoteResponse
+	(*GetNotesListResponse)(nil),      // 8: api.notes.v1.GetNotesListResponse
+	(*GetNoteResponse)(nil),           // 9: api.notes.v1.GetNoteResponse
+	(*UpdateNoteResponse)(nil),        // 10: api.notes.v1.UpdateNoteResponse
+	(*DeleteNoteResponse)(nil),        // 11: api.notes.v1.DeleteNoteResponse
+	(*SubscribeToEventsResponse)(nil), // 12: api.notes.v1.SubscribeToEventsResponse
+	(*UploadMetricsResponse)(nil),     // 13: api.notes.v1.UploadMetricsResponse
 }
 var file_api_notes_v1_notes_proto_depIdxs = []int32{
 	0,  // 0: api.notes.v1.NotesAPI.CreateNote:input_type -> api.notes.v1.CreateNoteRequest
@@ -57,14 +60,16 @@ var file_api_notes_v1_notes_proto_depIdxs = []int32{
 	3,  // 3: api.notes.v1.NotesAPI.UpdateNote:input_type -> api.notes.v1.UpdateNoteRequest
 	4,  // 4: api.notes.v1.NotesAPI.DeleteNote:input_type -> api.notes.v1.DeleteNoteRequest
 	5,  // 5: api.notes.v1.NotesAPI.SubscribeToEvents:input_type -> api.notes.v1.SubscribeToEventsRequest
-	6,  // 6: api.notes.v1.NotesAPI.CreateNote:output_type -> api.notes.v1.CreateNoteResponse
-	7,  // 7: api.notes.v1.NotesAPI.GetNotesList:output_type -> api.notes.v1.GetNotesListResponse
-	8,  // 8: api.notes.v1.NotesAPI.GetNote:output_type -> api.notes.v1.GetNoteResponse
-	9,  // 9: api.notes.v1.NotesAPI.UpdateNote:output_type -> api.notes.v1.UpdateNoteResponse
-	10, // 10: api.notes.v1.NotesAPI.DeleteNote:output_type -> api.notes.v1.DeleteNoteResponse
-	11, // 11: api.notes.v1.NotesAPI.SubscribeToEvents:output_type -> api.notes.v1.SubscribeToEventsResponse
-	6,  // [6:12] is the sub-list for method output_type
-	0,  // [0:6] is the sub-list for method input_type
+	6,  // 6: api.notes.v1.NotesAPI.UploadMetrics:input_type -> api.notes.v1.UploadMetricsRequest
+	7,  // 7: api.notes.v1.NotesAPI.CreateNote:output_type -> api.notes.v1.CreateNoteResponse
+	8,  // 8: api.notes.v1.NotesAPI.GetNotesList:output_type -> api.notes.v1.GetNotesListResponse
+	9,  // 9: api.notes.v1.NotesAPI.GetNote:output_type -> api.notes.v1.GetNoteResponse
+	10, // 10: api.notes.v1.NotesAPI.UpdateNote:output_type -> api.notes.v1.UpdateNoteResponse
+	11, // 11: api.notes.v1.NotesAPI.DeleteNote:output_type -> api.notes.v1.DeleteNoteResponse
+	12, // 12: api.notes.v1.NotesAPI.SubscribeToEvents:output_type -> api.notes.v1.SubscribeToEventsResponse
+	13, // 13: api.notes.v1.NotesAPI.UploadMetrics:output_type -> api.notes.v1.UploadMetricsResponse
+	7,  // [7:14] is the sub-list for method output_type
+	0,  // [0:7] is the sub-list for method input_type
 	0,  // [0:0] is the sub-list for extension type_name
 	0,  // [0:0] is the sub-list for extension extendee
 	0,  // [0:0] is the sub-list for field type_name

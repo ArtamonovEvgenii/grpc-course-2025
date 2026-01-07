@@ -769,6 +769,94 @@ func (x *CreateNoteEvent) GetTitle() string {
 	return ""
 }
 
+type UploadMetricsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Value         int64                  `protobuf:"varint,1,opt,name=value,proto3" json:"value,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UploadMetricsRequest) Reset() {
+	*x = UploadMetricsRequest{}
+	mi := &file_api_notes_v1_messages_proto_msgTypes[15]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UploadMetricsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UploadMetricsRequest) ProtoMessage() {}
+
+func (x *UploadMetricsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_notes_v1_messages_proto_msgTypes[15]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UploadMetricsRequest.ProtoReflect.Descriptor instead.
+func (*UploadMetricsRequest) Descriptor() ([]byte, []int) {
+	return file_api_notes_v1_messages_proto_rawDescGZIP(), []int{15}
+}
+
+func (x *UploadMetricsRequest) GetValue() int64 {
+	if x != nil {
+		return x.Value
+	}
+	return 0
+}
+
+type UploadMetricsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Sum           int64                  `protobuf:"varint,1,opt,name=sum,proto3" json:"sum,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UploadMetricsResponse) Reset() {
+	*x = UploadMetricsResponse{}
+	mi := &file_api_notes_v1_messages_proto_msgTypes[16]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UploadMetricsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UploadMetricsResponse) ProtoMessage() {}
+
+func (x *UploadMetricsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_api_notes_v1_messages_proto_msgTypes[16]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UploadMetricsResponse.ProtoReflect.Descriptor instead.
+func (*UploadMetricsResponse) Descriptor() ([]byte, []int) {
+	return file_api_notes_v1_messages_proto_rawDescGZIP(), []int{16}
+}
+
+func (x *UploadMetricsResponse) GetSum() int64 {
+	if x != nil {
+		return x.Sum
+	}
+	return 0
+}
+
 var File_api_notes_v1_messages_proto protoreflect.FileDescriptor
 
 const file_api_notes_v1_messages_proto_rawDesc = "" +
@@ -817,7 +905,11 @@ const file_api_notes_v1_messages_proto_rawDesc = "" +
 	"\ttimestamp\x18\x01 \x01(\v2\x15.google.type.DateTimeR\ttimestamp\";\n" +
 	"\x0fCreateNoteEvent\x12\x12\n" +
 	"\x04uuid\x18\x01 \x01(\tR\x04uuid\x12\x14\n" +
-	"\x05title\x18\x02 \x01(\tR\x05titleB?Z=github.com/ArtamonovEvgenii/grpc-course-2025/pkg/api/notes/v1b\x06proto3"
+	"\x05title\x18\x02 \x01(\tR\x05title\",\n" +
+	"\x14UploadMetricsRequest\x12\x14\n" +
+	"\x05value\x18\x01 \x01(\x03R\x05value\")\n" +
+	"\x15UploadMetricsResponse\x12\x10\n" +
+	"\x03sum\x18\x01 \x01(\x03R\x03sumB?Z=github.com/ArtamonovEvgenii/grpc-course-2025/pkg/api/notes/v1b\x06proto3"
 
 var (
 	file_api_notes_v1_messages_proto_rawDescOnce sync.Once
@@ -831,7 +923,7 @@ func file_api_notes_v1_messages_proto_rawDescGZIP() []byte {
 	return file_api_notes_v1_messages_proto_rawDescData
 }
 
-var file_api_notes_v1_messages_proto_msgTypes = make([]protoimpl.MessageInfo, 15)
+var file_api_notes_v1_messages_proto_msgTypes = make([]protoimpl.MessageInfo, 17)
 var file_api_notes_v1_messages_proto_goTypes = []any{
 	(*CreateNoteRequest)(nil),         // 0: api.notes.v1.CreateNoteRequest
 	(*CreateNoteResponse)(nil),        // 1: api.notes.v1.CreateNoteResponse
@@ -848,16 +940,18 @@ var file_api_notes_v1_messages_proto_goTypes = []any{
 	(*SubscribeToEventsResponse)(nil), // 12: api.notes.v1.SubscribeToEventsResponse
 	(*HeartbeatEvent)(nil),            // 13: api.notes.v1.HeartbeatEvent
 	(*CreateNoteEvent)(nil),           // 14: api.notes.v1.CreateNoteEvent
-	(*datetime.DateTime)(nil),         // 15: google.type.DateTime
+	(*UploadMetricsRequest)(nil),      // 15: api.notes.v1.UploadMetricsRequest
+	(*UploadMetricsResponse)(nil),     // 16: api.notes.v1.UploadMetricsResponse
+	(*datetime.DateTime)(nil),         // 17: google.type.DateTime
 }
 var file_api_notes_v1_messages_proto_depIdxs = []int32{
-	15, // 0: api.notes.v1.GetNotesListResponseNote.updated_at:type_name -> google.type.DateTime
+	17, // 0: api.notes.v1.GetNotesListResponseNote.updated_at:type_name -> google.type.DateTime
 	3,  // 1: api.notes.v1.GetNotesListResponse.notes:type_name -> api.notes.v1.GetNotesListResponseNote
-	15, // 2: api.notes.v1.GetNoteResponse.crated_at:type_name -> google.type.DateTime
-	15, // 3: api.notes.v1.GetNoteResponse.updated_at:type_name -> google.type.DateTime
+	17, // 2: api.notes.v1.GetNoteResponse.crated_at:type_name -> google.type.DateTime
+	17, // 3: api.notes.v1.GetNoteResponse.updated_at:type_name -> google.type.DateTime
 	13, // 4: api.notes.v1.SubscribeToEventsResponse.heartbeat:type_name -> api.notes.v1.HeartbeatEvent
 	14, // 5: api.notes.v1.SubscribeToEventsResponse.created_note:type_name -> api.notes.v1.CreateNoteEvent
-	15, // 6: api.notes.v1.HeartbeatEvent.timestamp:type_name -> google.type.DateTime
+	17, // 6: api.notes.v1.HeartbeatEvent.timestamp:type_name -> google.type.DateTime
 	7,  // [7:7] is the sub-list for method output_type
 	7,  // [7:7] is the sub-list for method input_type
 	7,  // [7:7] is the sub-list for extension type_name
@@ -880,7 +974,7 @@ func file_api_notes_v1_messages_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_api_notes_v1_messages_proto_rawDesc), len(file_api_notes_v1_messages_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   15,
+			NumMessages:   17,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
