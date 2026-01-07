@@ -32,7 +32,7 @@ func Run(ctx context.Context) error {
 		return errRunCommand
 	}
 
-	handler := slog.NewJSONHandler(os.Stderr, nil)
+	handler := slog.NewJSONHandler(os.Stderr, &slog.HandlerOptions{Level: slog.LevelDebug})
 	lgr := slog.New(handler)
 
 	inMemoryStorage := inmemory.NewStorage()
