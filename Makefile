@@ -23,6 +23,11 @@ lint-api: ### lint api definition using easyp
 	@easyp lint --path api
 
 
+.PHONY: breaking
+breaking: ### check breaking api changes
+	@easyp breaking --against main --path api
+
+
 .PHONY: bin-server
 bin-server: ### build grpc server
 	$(info build $(SERVER_BIN_NAME) ...)

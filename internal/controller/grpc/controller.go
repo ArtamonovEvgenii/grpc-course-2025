@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"log/slog"
+	"strings"
 	"time"
 
 	"buf.build/go/protovalidate"
@@ -350,10 +351,24 @@ func (c *Controller) responseChatMessages(
 				}
 
 				time.Sleep(1 * time.Second)
-				respMsg := &pb.ChatMessageResponse{
-					CorrelationId: msg.CorrelationID,
-					Text:          fmt.Sprintf("response for: %s", msg.Text),
+
+				var respMsg *pb.ChatMessageResponse
+				if strings.Contains(msg.Text, "error") {
+					respMsg = &pb.ChatMessageResponse{
+						Payload: &pb.ChatMessageResponse_Error{Error: &pb.ChatMessageErrorResponse{
+							CorrelationId: msg.CorrelationID,
+							Error:         fmt.Sprintf("some error happens for: %s", msg.Text),
+						}},
+					}
+				} else {
+					respMsg = &pb.ChatMessageResponse{
+						Payload: &pb.ChatMessageResponse_Success{Success: &pb.ChatMessageSuccessResponse{
+							CorrelationId: msg.CorrelationID,
+							Text:          fmt.Sprintf("response for: %s", msg.Text),
+						}},
+					}
 				}
+
 				err := stream.Send(respMsg)
 				if err != nil {
 					c.lgr.Error("send response", slog.String("error", err.Error()))
@@ -382,10 +397,14 @@ func (c *Controller) heartbeatChatMessages(
 				return nil
 			case <-ticker.C:
 				heartbeatNum++
+
 				heartbeatMsg := &pb.ChatMessageResponse{
-					CorrelationId: "none",
-					Text:          fmt.Sprintf("heartbeat: %d", heartbeatNum),
+					Payload: &pb.ChatMessageResponse_Success{Success: &pb.ChatMessageSuccessResponse{
+						CorrelationId: "none",
+						Text:          fmt.Sprintf("heartbeat: %d", heartbeatNum),
+					}},
 				}
+
 				err := stream.Send(heartbeatMsg)
 				if err != nil {
 					c.lgr.Error("send heartbeat message", slog.String("error", err.Error()))

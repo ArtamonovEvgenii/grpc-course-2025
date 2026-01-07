@@ -910,9 +910,12 @@ func (x *ChatMessageRequest) GetText() string {
 }
 
 type ChatMessageResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	CorrelationId string                 `protobuf:"bytes,1,opt,name=correlation_id,json=correlationId,proto3" json:"correlation_id,omitempty"`
-	Text          string                 `protobuf:"bytes,2,opt,name=text,proto3" json:"text,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Types that are valid to be assigned to Payload:
+	//
+	//	*ChatMessageResponse_Success
+	//	*ChatMessageResponse_Error
+	Payload       isChatMessageResponse_Payload `protobuf_oneof:"payload"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -947,16 +950,147 @@ func (*ChatMessageResponse) Descriptor() ([]byte, []int) {
 	return file_api_notes_v1_messages_proto_rawDescGZIP(), []int{18}
 }
 
-func (x *ChatMessageResponse) GetCorrelationId() string {
+func (x *ChatMessageResponse) GetPayload() isChatMessageResponse_Payload {
+	if x != nil {
+		return x.Payload
+	}
+	return nil
+}
+
+func (x *ChatMessageResponse) GetSuccess() *ChatMessageSuccessResponse {
+	if x != nil {
+		if x, ok := x.Payload.(*ChatMessageResponse_Success); ok {
+			return x.Success
+		}
+	}
+	return nil
+}
+
+func (x *ChatMessageResponse) GetError() *ChatMessageErrorResponse {
+	if x != nil {
+		if x, ok := x.Payload.(*ChatMessageResponse_Error); ok {
+			return x.Error
+		}
+	}
+	return nil
+}
+
+type isChatMessageResponse_Payload interface {
+	isChatMessageResponse_Payload()
+}
+
+type ChatMessageResponse_Success struct {
+	Success *ChatMessageSuccessResponse `protobuf:"bytes,1,opt,name=success,proto3,oneof"`
+}
+
+type ChatMessageResponse_Error struct {
+	Error *ChatMessageErrorResponse `protobuf:"bytes,2,opt,name=error,proto3,oneof"`
+}
+
+func (*ChatMessageResponse_Success) isChatMessageResponse_Payload() {}
+
+func (*ChatMessageResponse_Error) isChatMessageResponse_Payload() {}
+
+type ChatMessageSuccessResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	CorrelationId string                 `protobuf:"bytes,1,opt,name=correlation_id,json=correlationId,proto3" json:"correlation_id,omitempty"`
+	Text          string                 `protobuf:"bytes,2,opt,name=text,proto3" json:"text,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ChatMessageSuccessResponse) Reset() {
+	*x = ChatMessageSuccessResponse{}
+	mi := &file_api_notes_v1_messages_proto_msgTypes[19]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ChatMessageSuccessResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ChatMessageSuccessResponse) ProtoMessage() {}
+
+func (x *ChatMessageSuccessResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_api_notes_v1_messages_proto_msgTypes[19]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ChatMessageSuccessResponse.ProtoReflect.Descriptor instead.
+func (*ChatMessageSuccessResponse) Descriptor() ([]byte, []int) {
+	return file_api_notes_v1_messages_proto_rawDescGZIP(), []int{19}
+}
+
+func (x *ChatMessageSuccessResponse) GetCorrelationId() string {
 	if x != nil {
 		return x.CorrelationId
 	}
 	return ""
 }
 
-func (x *ChatMessageResponse) GetText() string {
+func (x *ChatMessageSuccessResponse) GetText() string {
 	if x != nil {
 		return x.Text
+	}
+	return ""
+}
+
+type ChatMessageErrorResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	CorrelationId string                 `protobuf:"bytes,1,opt,name=correlation_id,json=correlationId,proto3" json:"correlation_id,omitempty"`
+	Error         string                 `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ChatMessageErrorResponse) Reset() {
+	*x = ChatMessageErrorResponse{}
+	mi := &file_api_notes_v1_messages_proto_msgTypes[20]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ChatMessageErrorResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ChatMessageErrorResponse) ProtoMessage() {}
+
+func (x *ChatMessageErrorResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_api_notes_v1_messages_proto_msgTypes[20]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ChatMessageErrorResponse.ProtoReflect.Descriptor instead.
+func (*ChatMessageErrorResponse) Descriptor() ([]byte, []int) {
+	return file_api_notes_v1_messages_proto_rawDescGZIP(), []int{20}
+}
+
+func (x *ChatMessageErrorResponse) GetCorrelationId() string {
+	if x != nil {
+		return x.CorrelationId
+	}
+	return ""
+}
+
+func (x *ChatMessageErrorResponse) GetError() string {
+	if x != nil {
+		return x.Error
 	}
 	return ""
 }
@@ -1016,10 +1150,17 @@ const file_api_notes_v1_messages_proto_rawDesc = "" +
 	"\x03sum\x18\x01 \x01(\x03R\x03sum\"O\n" +
 	"\x12ChatMessageRequest\x12%\n" +
 	"\x0ecorrelation_id\x18\x01 \x01(\tR\rcorrelationId\x12\x12\n" +
-	"\x04text\x18\x02 \x01(\tR\x04text\"P\n" +
-	"\x13ChatMessageResponse\x12%\n" +
+	"\x04text\x18\x02 \x01(\tR\x04text\"\xa6\x01\n" +
+	"\x13ChatMessageResponse\x12D\n" +
+	"\asuccess\x18\x01 \x01(\v2(.api.notes.v1.ChatMessageSuccessResponseH\x00R\asuccess\x12>\n" +
+	"\x05error\x18\x02 \x01(\v2&.api.notes.v1.ChatMessageErrorResponseH\x00R\x05errorB\t\n" +
+	"\apayload\"W\n" +
+	"\x1aChatMessageSuccessResponse\x12%\n" +
 	"\x0ecorrelation_id\x18\x01 \x01(\tR\rcorrelationId\x12\x12\n" +
-	"\x04text\x18\x02 \x01(\tR\x04textB?Z=github.com/ArtamonovEvgenii/grpc-course-2025/pkg/api/notes/v1b\x06proto3"
+	"\x04text\x18\x02 \x01(\tR\x04text\"W\n" +
+	"\x18ChatMessageErrorResponse\x12%\n" +
+	"\x0ecorrelation_id\x18\x01 \x01(\tR\rcorrelationId\x12\x14\n" +
+	"\x05error\x18\x02 \x01(\tR\x05errorB?Z=github.com/ArtamonovEvgenii/grpc-course-2025/pkg/api/notes/v1b\x06proto3"
 
 var (
 	file_api_notes_v1_messages_proto_rawDescOnce sync.Once
@@ -1033,42 +1174,46 @@ func file_api_notes_v1_messages_proto_rawDescGZIP() []byte {
 	return file_api_notes_v1_messages_proto_rawDescData
 }
 
-var file_api_notes_v1_messages_proto_msgTypes = make([]protoimpl.MessageInfo, 19)
+var file_api_notes_v1_messages_proto_msgTypes = make([]protoimpl.MessageInfo, 21)
 var file_api_notes_v1_messages_proto_goTypes = []any{
-	(*CreateNoteRequest)(nil),         // 0: api.notes.v1.CreateNoteRequest
-	(*CreateNoteResponse)(nil),        // 1: api.notes.v1.CreateNoteResponse
-	(*GetNotesListRequest)(nil),       // 2: api.notes.v1.GetNotesListRequest
-	(*GetNotesListResponseNote)(nil),  // 3: api.notes.v1.GetNotesListResponseNote
-	(*GetNotesListResponse)(nil),      // 4: api.notes.v1.GetNotesListResponse
-	(*GetNoteRequest)(nil),            // 5: api.notes.v1.GetNoteRequest
-	(*GetNoteResponse)(nil),           // 6: api.notes.v1.GetNoteResponse
-	(*UpdateNoteRequest)(nil),         // 7: api.notes.v1.UpdateNoteRequest
-	(*UpdateNoteResponse)(nil),        // 8: api.notes.v1.UpdateNoteResponse
-	(*DeleteNoteRequest)(nil),         // 9: api.notes.v1.DeleteNoteRequest
-	(*DeleteNoteResponse)(nil),        // 10: api.notes.v1.DeleteNoteResponse
-	(*SubscribeToEventsRequest)(nil),  // 11: api.notes.v1.SubscribeToEventsRequest
-	(*SubscribeToEventsResponse)(nil), // 12: api.notes.v1.SubscribeToEventsResponse
-	(*HeartbeatEvent)(nil),            // 13: api.notes.v1.HeartbeatEvent
-	(*CreateNoteEvent)(nil),           // 14: api.notes.v1.CreateNoteEvent
-	(*UploadMetricsRequest)(nil),      // 15: api.notes.v1.UploadMetricsRequest
-	(*UploadMetricsResponse)(nil),     // 16: api.notes.v1.UploadMetricsResponse
-	(*ChatMessageRequest)(nil),        // 17: api.notes.v1.ChatMessageRequest
-	(*ChatMessageResponse)(nil),       // 18: api.notes.v1.ChatMessageResponse
-	(*datetime.DateTime)(nil),         // 19: google.type.DateTime
+	(*CreateNoteRequest)(nil),          // 0: api.notes.v1.CreateNoteRequest
+	(*CreateNoteResponse)(nil),         // 1: api.notes.v1.CreateNoteResponse
+	(*GetNotesListRequest)(nil),        // 2: api.notes.v1.GetNotesListRequest
+	(*GetNotesListResponseNote)(nil),   // 3: api.notes.v1.GetNotesListResponseNote
+	(*GetNotesListResponse)(nil),       // 4: api.notes.v1.GetNotesListResponse
+	(*GetNoteRequest)(nil),             // 5: api.notes.v1.GetNoteRequest
+	(*GetNoteResponse)(nil),            // 6: api.notes.v1.GetNoteResponse
+	(*UpdateNoteRequest)(nil),          // 7: api.notes.v1.UpdateNoteRequest
+	(*UpdateNoteResponse)(nil),         // 8: api.notes.v1.UpdateNoteResponse
+	(*DeleteNoteRequest)(nil),          // 9: api.notes.v1.DeleteNoteRequest
+	(*DeleteNoteResponse)(nil),         // 10: api.notes.v1.DeleteNoteResponse
+	(*SubscribeToEventsRequest)(nil),   // 11: api.notes.v1.SubscribeToEventsRequest
+	(*SubscribeToEventsResponse)(nil),  // 12: api.notes.v1.SubscribeToEventsResponse
+	(*HeartbeatEvent)(nil),             // 13: api.notes.v1.HeartbeatEvent
+	(*CreateNoteEvent)(nil),            // 14: api.notes.v1.CreateNoteEvent
+	(*UploadMetricsRequest)(nil),       // 15: api.notes.v1.UploadMetricsRequest
+	(*UploadMetricsResponse)(nil),      // 16: api.notes.v1.UploadMetricsResponse
+	(*ChatMessageRequest)(nil),         // 17: api.notes.v1.ChatMessageRequest
+	(*ChatMessageResponse)(nil),        // 18: api.notes.v1.ChatMessageResponse
+	(*ChatMessageSuccessResponse)(nil), // 19: api.notes.v1.ChatMessageSuccessResponse
+	(*ChatMessageErrorResponse)(nil),   // 20: api.notes.v1.ChatMessageErrorResponse
+	(*datetime.DateTime)(nil),          // 21: google.type.DateTime
 }
 var file_api_notes_v1_messages_proto_depIdxs = []int32{
-	19, // 0: api.notes.v1.GetNotesListResponseNote.updated_at:type_name -> google.type.DateTime
+	21, // 0: api.notes.v1.GetNotesListResponseNote.updated_at:type_name -> google.type.DateTime
 	3,  // 1: api.notes.v1.GetNotesListResponse.notes:type_name -> api.notes.v1.GetNotesListResponseNote
-	19, // 2: api.notes.v1.GetNoteResponse.crated_at:type_name -> google.type.DateTime
-	19, // 3: api.notes.v1.GetNoteResponse.updated_at:type_name -> google.type.DateTime
+	21, // 2: api.notes.v1.GetNoteResponse.crated_at:type_name -> google.type.DateTime
+	21, // 3: api.notes.v1.GetNoteResponse.updated_at:type_name -> google.type.DateTime
 	13, // 4: api.notes.v1.SubscribeToEventsResponse.heartbeat:type_name -> api.notes.v1.HeartbeatEvent
 	14, // 5: api.notes.v1.SubscribeToEventsResponse.created_note:type_name -> api.notes.v1.CreateNoteEvent
-	19, // 6: api.notes.v1.HeartbeatEvent.timestamp:type_name -> google.type.DateTime
-	7,  // [7:7] is the sub-list for method output_type
-	7,  // [7:7] is the sub-list for method input_type
-	7,  // [7:7] is the sub-list for extension type_name
-	7,  // [7:7] is the sub-list for extension extendee
-	0,  // [0:7] is the sub-list for field type_name
+	21, // 6: api.notes.v1.HeartbeatEvent.timestamp:type_name -> google.type.DateTime
+	19, // 7: api.notes.v1.ChatMessageResponse.success:type_name -> api.notes.v1.ChatMessageSuccessResponse
+	20, // 8: api.notes.v1.ChatMessageResponse.error:type_name -> api.notes.v1.ChatMessageErrorResponse
+	9,  // [9:9] is the sub-list for method output_type
+	9,  // [9:9] is the sub-list for method input_type
+	9,  // [9:9] is the sub-list for extension type_name
+	9,  // [9:9] is the sub-list for extension extendee
+	0,  // [0:9] is the sub-list for field type_name
 }
 
 func init() { file_api_notes_v1_messages_proto_init() }
@@ -1080,13 +1225,17 @@ func file_api_notes_v1_messages_proto_init() {
 		(*SubscribeToEventsResponse_Heartbeat)(nil),
 		(*SubscribeToEventsResponse_CreatedNote)(nil),
 	}
+	file_api_notes_v1_messages_proto_msgTypes[18].OneofWrappers = []any{
+		(*ChatMessageResponse_Success)(nil),
+		(*ChatMessageResponse_Error)(nil),
+	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_api_notes_v1_messages_proto_rawDesc), len(file_api_notes_v1_messages_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   19,
+			NumMessages:   21,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
