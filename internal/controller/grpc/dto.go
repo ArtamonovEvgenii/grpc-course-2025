@@ -37,9 +37,10 @@ func responseDateTime(t time.Time) *datetime.DateTime {
 	}
 }
 
-func domainToTransportError(err error) error {
-	if errors.Is(err, entity.ErrNoteNotFound) {
-		respStatus := status.New(codes.Internal, entity.ErrNoteNotFound.Error())
+func domainToTransportError(grpcCode codes.Code, err error) error {
+	switch {
+	case errors.Is(err, entity.ErrNoteNotFound):
+		respStatus := status.New(grpcCode, entity.ErrNoteNotFound.Error())
 
 		descriptionText := err.Error()
 		fmt.Println(descriptionText)
@@ -56,9 +57,10 @@ func domainToTransportError(err error) error {
 		}
 
 		return respStatus.Err()
+
+	default:
+		respStatus := status.New(grpcCode, err.Error())
+
+		return respStatus.Err()
 	}
-
-	respStatus := status.New(codes.Internal, err.Error())
-
-	return respStatus.Err()
 }

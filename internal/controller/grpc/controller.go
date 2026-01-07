@@ -97,7 +97,7 @@ func (c *Controller) GetNote(
 
 	note, err := c.notesUsecase.GetNote(ctx, entity.NoteUUID(noteUUID))
 	if err != nil {
-		return nil, domainToTransportError(err)
+		return nil, domainToTransportError(codes.Internal, err)
 	}
 
 	resp := &pb.GetNoteResponse{
