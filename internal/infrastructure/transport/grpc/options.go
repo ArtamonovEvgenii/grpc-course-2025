@@ -5,18 +5,34 @@ import (
 
 	grpcmiddleware "github.com/grpc-ecosystem/go-grpc-middleware"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
+	"google.golang.org/grpc/keepalive"
 
+	"github.com/ArtamonovEvgenii/grpc-course-2025/config"
 	"github.com/ArtamonovEvgenii/grpc-course-2025/internal/infrastructure/transport/grpc/interceptor"
 )
 
-func ServerOption(
+func ServerOptions(
 	lgr *slog.Logger,
-) grpc.ServerOption {
-	grpcServerOption := grpc.UnaryInterceptor(
-		grpcmiddleware.ChainUnaryServer(
-			interceptor.NewRecoveryUnaryInterceptor(lgr),
-			interceptor.NewLoggingUnaryInterceptor(lgr),
-		))
+	cfg config.GRPCServer,
+	token string,
+) []grpc.ServerOption {
+	options := []grpc.ServerOption{
+		grpc.Creds(insecure.NewCredentials()),
+		grpc.KeepaliveParams(
+			keepalive.ServerParameters{
+				Time:    cfg.KeepAliveTime,
+				Timeout: cfg.KeepAliveTimeout,
+			},
+		),
+		grpc.MaxConcurrentStreams(uint32(cfg.MaxConcurrentStreams)),
+		grpc.UnaryInterceptor(
+			grpcmiddleware.ChainUnaryServer(
+				interceptor.NewRecoveryUnaryInterceptor(lgr),
+				interceptor.NewAuthUnaryInterceptor(token),
+				interceptor.NewLoggingUnaryInterceptor(lgr),
+			)),
+	}
 
-	return grpcServerOption
+	return options
 }

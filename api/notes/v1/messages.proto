@@ -1,0 +1,73 @@
+syntax = "proto3";
+
+package api.notes.v1;
+
+import "google/type/datetime.proto";
+import "buf/validate/validate.proto";
+
+option go_package = "github.com/ArtamonovEvgenii/grpc-course-2025/pkg/api/notes/v1";
+
+message CreateNoteRequest {
+  string title = 1[
+    (buf.validate.field).string.min_len = 5,
+    (buf.validate.field).string.max_len = 255
+  ];
+  string text = 2[
+    (buf.validate.field).string.min_len = 10
+  ];
+}
+
+message CreateNoteResponse{
+  string uuid = 1;
+}
+
+message GetNotesListRequest{
+
+}
+
+message GetNotesListResponseNote {
+  string uuid = 1;
+  string title = 2;
+  google.type.DateTime updated_at = 3;
+}
+
+message GetNotesListResponse{
+  repeated GetNotesListResponseNote notes = 1;
+}
+
+message GetNoteRequest {
+  string uuid = 1[
+    (buf.validate.field).string.uuid = true
+  ];
+}
+
+message GetNoteResponse {
+  string uuid = 1;
+  string title = 2;
+  string text = 3;
+  google.type.DateTime crated_at = 4;
+  google.type.DateTime updated_at = 5;
+}
+
+message UpdateNoteRequest {
+  string uuid = 1[
+    (buf.validate.field).string.uuid = true
+  ];
+  string title = 2[
+    (buf.validate.field).string.min_len = 5,
+    (buf.validate.field).string.max_len = 255
+  ];
+  string text = 3[
+    (buf.validate.field).string.min_len = 10
+  ];
+}
+
+message UpdateNoteResponse {}
+
+message DeleteNoteRequest {
+  string uuid = 1[
+    (buf.validate.field).string.uuid = true
+  ];
+}
+
+message DeleteNoteResponse {}

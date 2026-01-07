@@ -3,6 +3,7 @@
 
 # binary
 /server
+/client
 
 # local
 /local
