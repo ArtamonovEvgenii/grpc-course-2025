@@ -18,6 +18,7 @@ func LoadConfig() (Config, error) {
 
 type Config struct {
 	GRPCServer GRPCServer `env-prefix:"GRPC_SERVER_"`
+	HTTPServer HTTPServer `env-prefix:"HTTP_SERVER_"`
 	Auth       Auth       `env-prefix:"AUTH_"`
 }
 
@@ -31,4 +32,9 @@ type GRPCServer struct {
 
 type Auth struct {
 	Token string `env:"TOKEN" env-required:"true"`
+}
+
+type HTTPServer struct {
+	Host string `env:"HOST" env-default:"0.0.0.0"`
+	Port int    `env:"PORT" env-default:"8081"`
 }

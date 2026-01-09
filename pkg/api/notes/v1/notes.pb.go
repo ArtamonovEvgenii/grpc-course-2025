@@ -7,6 +7,7 @@
 package v1
 
 import (
+	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -24,19 +25,19 @@ var File_api_notes_v1_notes_proto protoreflect.FileDescriptor
 
 const file_api_notes_v1_notes_proto_rawDesc = "" +
 	"\n" +
-	"\x18api/notes/v1/notes.proto\x12\fapi.notes.v1\x1a\x1bapi/notes/v1/messages.proto2\xc1\x05\n" +
-	"\bNotesAPI\x12Q\n" +
+	"\x18api/notes/v1/notes.proto\x12\fapi.notes.v1\x1a\x1bapi/notes/v1/messages.proto\x1a\x1cgoogle/api/annotations.proto2\xa6\a\n" +
+	"\bNotesAPI\x12p\n" +
 	"\n" +
-	"CreateNote\x12\x1f.api.notes.v1.CreateNoteRequest\x1a .api.notes.v1.CreateNoteResponse\"\x00\x12W\n" +
-	"\fGetNotesList\x12!.api.notes.v1.GetNotesListRequest\x1a\".api.notes.v1.GetNotesListResponse\"\x00\x12H\n" +
-	"\aGetNote\x12\x1c.api.notes.v1.GetNoteRequest\x1a\x1d.api.notes.v1.GetNoteResponse\"\x00\x12Q\n" +
+	"CreateNote\x12\x1f.api.notes.v1.CreateNoteRequest\x1a .api.notes.v1.CreateNoteResponse\"\x1f\x82\xd3\xe4\x93\x02\x19:\x01*\"\x14/api/v1/notes/create\x12l\n" +
+	"\fGetNotesList\x12!.api.notes.v1.GetNotesListRequest\x1a\".api.notes.v1.GetNotesListResponse\"\x15\x82\xd3\xe4\x93\x02\x0f\x12\r/api/v1/notes\x12d\n" +
+	"\aGetNote\x12\x1c.api.notes.v1.GetNoteRequest\x1a\x1d.api.notes.v1.GetNoteResponse\"\x1c\x82\xd3\xe4\x93\x02\x16\x12\x14/api/v1/notes/{uuid}\x12p\n" +
 	"\n" +
-	"UpdateNote\x12\x1f.api.notes.v1.UpdateNoteRequest\x1a .api.notes.v1.UpdateNoteResponse\"\x00\x12Q\n" +
+	"UpdateNote\x12\x1f.api.notes.v1.UpdateNoteRequest\x1a .api.notes.v1.UpdateNoteResponse\"\x1f\x82\xd3\xe4\x93\x02\x19:\x01*\"\x14/api/v1/notes/update\x12p\n" +
 	"\n" +
-	"DeleteNote\x12\x1f.api.notes.v1.DeleteNoteRequest\x1a .api.notes.v1.DeleteNoteResponse\"\x00\x12h\n" +
-	"\x11SubscribeToEvents\x12&.api.notes.v1.SubscribeToEventsRequest\x1a'.api.notes.v1.SubscribeToEventsResponse\"\x000\x01\x12\\\n" +
-	"\rUploadMetrics\x12\".api.notes.v1.UploadMetricsRequest\x1a#.api.notes.v1.UploadMetricsResponse\"\x00(\x01\x12Q\n" +
-	"\x04Chat\x12 .api.notes.v1.ChatMessageRequest\x1a!.api.notes.v1.ChatMessageResponse\"\x00(\x010\x01B?Z=github.com/ArtamonovEvgenii/grpc-course-2025/pkg/api/notes/v1b\x06proto3"
+	"DeleteNote\x12\x1f.api.notes.v1.DeleteNoteRequest\x1a .api.notes.v1.DeleteNoteResponse\"\x1f\x82\xd3\xe4\x93\x02\x19:\x01*\"\x14/api/v1/notes/delete\x12\x85\x01\n" +
+	"\x11SubscribeToEvents\x12&.api.notes.v1.SubscribeToEventsRequest\x1a'.api.notes.v1.SubscribeToEventsResponse\"\x1d\x82\xd3\xe4\x93\x02\x17\x12\x15/api/v1/stream/events0\x01\x12z\n" +
+	"\rUploadMetrics\x12\".api.notes.v1.UploadMetricsRequest\x1a#.api.notes.v1.UploadMetricsResponse\"\x1e\x82\xd3\xe4\x93\x02\x18\x12\x16/api/v1/stream/metrics(\x01\x12l\n" +
+	"\x04Chat\x12 .api.notes.v1.ChatMessageRequest\x1a!.api.notes.v1.ChatMessageResponse\"\x1b\x82\xd3\xe4\x93\x02\x15\x12\x13/api/v1/stream/chat(\x010\x01B?Z=github.com/ArtamonovEvgenii/grpc-course-2025/pkg/api/notes/v1b\x06proto3"
 
 var file_api_notes_v1_notes_proto_goTypes = []any{
 	(*CreateNoteRequest)(nil),         // 0: api.notes.v1.CreateNoteRequest

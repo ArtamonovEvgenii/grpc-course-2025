@@ -1099,12 +1099,12 @@ var File_api_notes_v1_messages_proto protoreflect.FileDescriptor
 
 const file_api_notes_v1_messages_proto_rawDesc = "" +
 	"\n" +
-	"\x1bapi/notes/v1/messages.proto\x12\fapi.notes.v1\x1a\x1agoogle/type/datetime.proto\x1a\x1bbuf/validate/validate.proto\"R\n" +
+	"\x1bapi/notes/v1/messages.proto\x12\fapi.notes.v1\x1a\x1agoogle/type/datetime.proto\x1a\x1bbuf/validate/validate.proto\"\x95\x01\n" +
 	"\x11CreateNoteRequest\x12 \n" +
 	"\x05title\x18\x01 \x01(\tB\n" +
 	"\xbaH\ar\x05\x10\x05\x18\xff\x01R\x05title\x12\x1b\n" +
 	"\x04text\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x10\n" +
-	"R\x04text\"(\n" +
+	"R\x04text:A\xbaH>\x1a<\x12!title should not be equal to text\x1a\x17this.title != this.text\"(\n" +
 	"\x12CreateNoteResponse\x12\x12\n" +
 	"\x04uuid\x18\x01 \x01(\tR\x04uuid\"\x15\n" +
 	"\x13GetNotesListRequest\"z\n" +

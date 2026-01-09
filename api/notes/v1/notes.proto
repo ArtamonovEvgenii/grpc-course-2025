@@ -4,16 +4,52 @@ package api.notes.v1;
 
 
 import "api/notes/v1/messages.proto";
+import "google/api/annotations.proto";
 
 option go_package = "github.com/ArtamonovEvgenii/grpc-course-2025/pkg/api/notes/v1";
 
 service NotesAPI {
-  rpc CreateNote(CreateNoteRequest) returns(CreateNoteResponse) {}
-  rpc GetNotesList(GetNotesListRequest) returns(GetNotesListResponse) {}
-  rpc GetNote(GetNoteRequest) returns(GetNoteResponse) {}
-  rpc UpdateNote(UpdateNoteRequest) returns(UpdateNoteResponse) {}
-  rpc DeleteNote(DeleteNoteRequest) returns(DeleteNoteResponse) {}
-  rpc SubscribeToEvents(SubscribeToEventsRequest) returns(stream SubscribeToEventsResponse) {}
-  rpc UploadMetrics(stream UploadMetricsRequest) returns(UploadMetricsResponse) {}
-  rpc Chat(stream ChatMessageRequest) returns(stream ChatMessageResponse) {}
+  rpc CreateNote(CreateNoteRequest) returns(CreateNoteResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/notes/create"
+      body: "*"
+    };
+  }
+  rpc GetNotesList(GetNotesListRequest) returns(GetNotesListResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/notes"
+    };
+  }
+  rpc GetNote(GetNoteRequest) returns(GetNoteResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/notes/{uuid}"
+    };
+  }
+  rpc UpdateNote(UpdateNoteRequest) returns(UpdateNoteResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/notes/update"
+      body: "*"
+    };
+  }
+  rpc DeleteNote(DeleteNoteRequest) returns(DeleteNoteResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/notes/delete"
+      body: "*"
+    };
+  }
+  rpc SubscribeToEvents(SubscribeToEventsRequest) returns(stream SubscribeToEventsResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/stream/events"
+    };
+  }
+  rpc UploadMetrics(stream UploadMetricsRequest) returns(UploadMetricsResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/stream/metrics"
+    };
+  }
+  rpc Chat(stream ChatMessageRequest) returns(stream ChatMessageResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/stream/chat"
+    };
+  }
 }

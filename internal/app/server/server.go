@@ -4,19 +4,20 @@ import (
 	"context"
 	"fmt"
 	"log/slog"
+	"net/http"
 	"os"
 
 	"golang.org/x/sync/errgroup"
 	"google.golang.org/grpc/reflection"
 
 	"github.com/ArtamonovEvgenii/grpc-course-2025/config"
+	grpccontroller "github.com/ArtamonovEvgenii/grpc-course-2025/internal/controller/grpc"
+	httpcontroller "github.com/ArtamonovEvgenii/grpc-course-2025/internal/controller/http"
+	grpctransport "github.com/ArtamonovEvgenii/grpc-course-2025/internal/infrastructure/transport/grpc"
+	httptransport "github.com/ArtamonovEvgenii/grpc-course-2025/internal/infrastructure/transport/http"
 	"github.com/ArtamonovEvgenii/grpc-course-2025/internal/repository/inmemory"
 	"github.com/ArtamonovEvgenii/grpc-course-2025/internal/usecase"
-
 	grpcv1 "github.com/ArtamonovEvgenii/grpc-course-2025/pkg/api/notes/v1"
-
-	grpccontroller "github.com/ArtamonovEvgenii/grpc-course-2025/internal/controller/grpc"
-	grpctransport "github.com/ArtamonovEvgenii/grpc-course-2025/internal/infrastructure/transport/grpc"
 )
 
 var errRunCommand = fmt.Errorf("run command error")
@@ -55,9 +56,25 @@ func Run(ctx context.Context) error {
 	grpcv1.RegisterNotesAPIServer(grpcServer.Server(), grpcController)
 	reflection.Register(grpcServer.Server())
 
+	httpGWMux, err := httpcontroller.NewGatewayMux(ctx, cfg.GRPCServer)
+	if err != nil {
+		lgr.Error("create grpc gateway", slog.String("error", err.Error()))
+		return errRunCommand
+	}
+
+	mux := http.NewServeMux()
+	mux.Handle("/", httpGWMux)
+	httpcontroller.ServeSwagger(mux)
+
+	httpServer, err := httptransport.NewServer(lgr, cfg.HTTPServer, mux)
+	if err != nil {
+		lgr.Error("create http server", slog.String("error", err.Error()))
+		return errRunCommand
+	}
+
 	lgr.Info("service starting")
 
-	err = runServices(ctx, grpcServer)
+	err = runServices(ctx, grpcServer, httpServer)
 	if err != nil {
 		lgr.Error("service runtime", slog.String("error", err.Error()))
 		return errRunCommand
