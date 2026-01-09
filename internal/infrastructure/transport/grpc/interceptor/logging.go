@@ -24,3 +24,36 @@ func NewLoggingUnaryInterceptor(lgr *slog.Logger) grpc.UnaryServerInterceptor {
 
 	return logging.UnaryServerInterceptor(newInterceptorLogger(lgr), opts...)
 }
+
+func NewLoggingStreamInterceptor(lgr *slog.Logger) grpc.StreamServerInterceptor {
+	lgr = lgr.With(slog.String("component", "grpc_stream_interceptor"))
+
+	return func(srv any, ss grpc.ServerStream, info *grpc.StreamServerInfo, handler grpc.StreamHandler) error {
+		wrappedStream := &wrappedServerStream{
+			ServerStream: ss,
+			lgr:          lgr,
+		}
+
+		return handler(srv, wrappedStream)
+	}
+}
+
+type wrappedServerStream struct {
+	grpc.ServerStream
+	lgr *slog.Logger
+}
+
+func (w *wrappedServerStream) SendMsg(m interface{}) error {
+	w.lgr.Debug("server send", slog.Any("data", m))
+
+	// Call the original Send method
+	return w.ServerStream.SendMsg(m)
+}
+
+func (w *wrappedServerStream) RecvMsg(m interface{}) error {
+	err := w.ServerStream.RecvMsg(m)
+
+	w.lgr.Debug("server got", slog.Any("data", m))
+
+	return err
+}

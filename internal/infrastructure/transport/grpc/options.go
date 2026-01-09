@@ -31,7 +31,13 @@ func ServerOptions(
 				interceptor.NewRecoveryUnaryInterceptor(lgr),
 				interceptor.NewAuthUnaryInterceptor(token),
 				interceptor.NewLoggingUnaryInterceptor(lgr),
-			)),
+			),
+		),
+		grpc.StreamInterceptor(
+			grpcmiddleware.ChainStreamServer(
+				interceptor.NewLoggingStreamInterceptor(lgr),
+			),
+		),
 	}
 
 	return options

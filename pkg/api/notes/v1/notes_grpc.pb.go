@@ -19,11 +19,14 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	NotesAPI_CreateNote_FullMethodName   = "/api.notes.v1.NotesAPI/CreateNote"
-	NotesAPI_GetNotesList_FullMethodName = "/api.notes.v1.NotesAPI/GetNotesList"
-	NotesAPI_GetNote_FullMethodName      = "/api.notes.v1.NotesAPI/GetNote"
-	NotesAPI_UpdateNote_FullMethodName   = "/api.notes.v1.NotesAPI/UpdateNote"
-	NotesAPI_DeleteNote_FullMethodName   = "/api.notes.v1.NotesAPI/DeleteNote"
+	NotesAPI_CreateNote_FullMethodName        = "/api.notes.v1.NotesAPI/CreateNote"
+	NotesAPI_GetNotesList_FullMethodName      = "/api.notes.v1.NotesAPI/GetNotesList"
+	NotesAPI_GetNote_FullMethodName           = "/api.notes.v1.NotesAPI/GetNote"
+	NotesAPI_UpdateNote_FullMethodName        = "/api.notes.v1.NotesAPI/UpdateNote"
+	NotesAPI_DeleteNote_FullMethodName        = "/api.notes.v1.NotesAPI/DeleteNote"
+	NotesAPI_SubscribeToEvents_FullMethodName = "/api.notes.v1.NotesAPI/SubscribeToEvents"
+	NotesAPI_UploadMetrics_FullMethodName     = "/api.notes.v1.NotesAPI/UploadMetrics"
+	NotesAPI_Chat_FullMethodName              = "/api.notes.v1.NotesAPI/Chat"
 )
 
 // NotesAPIClient is the client API for NotesAPI service.
@@ -35,6 +38,9 @@ type NotesAPIClient interface {
 	GetNote(ctx context.Context, in *GetNoteRequest, opts ...grpc.CallOption) (*GetNoteResponse, error)
 	UpdateNote(ctx context.Context, in *UpdateNoteRequest, opts ...grpc.CallOption) (*UpdateNoteResponse, error)
 	DeleteNote(ctx context.Context, in *DeleteNoteRequest, opts ...grpc.CallOption) (*DeleteNoteResponse, error)
+	SubscribeToEvents(ctx context.Context, in *SubscribeToEventsRequest, opts ...grpc.CallOption) (NotesAPI_SubscribeToEventsClient, error)
+	UploadMetrics(ctx context.Context, opts ...grpc.CallOption) (NotesAPI_UploadMetricsClient, error)
+	Chat(ctx context.Context, opts ...grpc.CallOption) (NotesAPI_ChatClient, error)
 }
 
 type notesAPIClient struct {
@@ -90,6 +96,103 @@ func (c *notesAPIClient) DeleteNote(ctx context.Context, in *DeleteNoteRequest, 
 	return out, nil
 }
 
+func (c *notesAPIClient) SubscribeToEvents(ctx context.Context, in *SubscribeToEventsRequest, opts ...grpc.CallOption) (NotesAPI_SubscribeToEventsClient, error) {
+	stream, err := c.cc.NewStream(ctx, &NotesAPI_ServiceDesc.Streams[0], NotesAPI_SubscribeToEvents_FullMethodName, opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &notesAPISubscribeToEventsClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type NotesAPI_SubscribeToEventsClient interface {
+	Recv() (*SubscribeToEventsResponse, error)
+	grpc.ClientStream
+}
+
+type notesAPISubscribeToEventsClient struct {
+	grpc.ClientStream
+}
+
+func (x *notesAPISubscribeToEventsClient) Recv() (*SubscribeToEventsResponse, error) {
+	m := new(SubscribeToEventsResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func (c *notesAPIClient) UploadMetrics(ctx context.Context, opts ...grpc.CallOption) (NotesAPI_UploadMetricsClient, error) {
+	stream, err := c.cc.NewStream(ctx, &NotesAPI_ServiceDesc.Streams[1], NotesAPI_UploadMetrics_FullMethodName, opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &notesAPIUploadMetricsClient{stream}
+	return x, nil
+}
+
+type NotesAPI_UploadMetricsClient interface {
+	Send(*UploadMetricsRequest) error
+	CloseAndRecv() (*UploadMetricsResponse, error)
+	grpc.ClientStream
+}
+
+type notesAPIUploadMetricsClient struct {
+	grpc.ClientStream
+}
+
+func (x *notesAPIUploadMetricsClient) Send(m *UploadMetricsRequest) error {
+	return x.ClientStream.SendMsg(m)
+}
+
+func (x *notesAPIUploadMetricsClient) CloseAndRecv() (*UploadMetricsResponse, error) {
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	m := new(UploadMetricsResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func (c *notesAPIClient) Chat(ctx context.Context, opts ...grpc.CallOption) (NotesAPI_ChatClient, error) {
+	stream, err := c.cc.NewStream(ctx, &NotesAPI_ServiceDesc.Streams[2], NotesAPI_Chat_FullMethodName, opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &notesAPIChatClient{stream}
+	return x, nil
+}
+
+type NotesAPI_ChatClient interface {
+	Send(*ChatMessageRequest) error
+	Recv() (*ChatMessageResponse, error)
+	grpc.ClientStream
+}
+
+type notesAPIChatClient struct {
+	grpc.ClientStream
+}
+
+func (x *notesAPIChatClient) Send(m *ChatMessageRequest) error {
+	return x.ClientStream.SendMsg(m)
+}
+
+func (x *notesAPIChatClient) Recv() (*ChatMessageResponse, error) {
+	m := new(ChatMessageResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 // NotesAPIServer is the server API for NotesAPI service.
 // All implementations should embed UnimplementedNotesAPIServer
 // for forward compatibility
@@ -99,6 +202,9 @@ type NotesAPIServer interface {
 	GetNote(context.Context, *GetNoteRequest) (*GetNoteResponse, error)
 	UpdateNote(context.Context, *UpdateNoteRequest) (*UpdateNoteResponse, error)
 	DeleteNote(context.Context, *DeleteNoteRequest) (*DeleteNoteResponse, error)
+	SubscribeToEvents(*SubscribeToEventsRequest, NotesAPI_SubscribeToEventsServer) error
+	UploadMetrics(NotesAPI_UploadMetricsServer) error
+	Chat(NotesAPI_ChatServer) error
 }
 
 // UnimplementedNotesAPIServer should be embedded to have forward compatible implementations.
@@ -119,6 +225,15 @@ func (UnimplementedNotesAPIServer) UpdateNote(context.Context, *UpdateNoteReques
 }
 func (UnimplementedNotesAPIServer) DeleteNote(context.Context, *DeleteNoteRequest) (*DeleteNoteResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteNote not implemented")
+}
+func (UnimplementedNotesAPIServer) SubscribeToEvents(*SubscribeToEventsRequest, NotesAPI_SubscribeToEventsServer) error {
+	return status.Errorf(codes.Unimplemented, "method SubscribeToEvents not implemented")
+}
+func (UnimplementedNotesAPIServer) UploadMetrics(NotesAPI_UploadMetricsServer) error {
+	return status.Errorf(codes.Unimplemented, "method UploadMetrics not implemented")
+}
+func (UnimplementedNotesAPIServer) Chat(NotesAPI_ChatServer) error {
+	return status.Errorf(codes.Unimplemented, "method Chat not implemented")
 }
 
 // UnsafeNotesAPIServer may be embedded to opt out of forward compatibility for this service.
@@ -222,6 +337,79 @@ func _NotesAPI_DeleteNote_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
+func _NotesAPI_SubscribeToEvents_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(SubscribeToEventsRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(NotesAPIServer).SubscribeToEvents(m, &notesAPISubscribeToEventsServer{stream})
+}
+
+type NotesAPI_SubscribeToEventsServer interface {
+	Send(*SubscribeToEventsResponse) error
+	grpc.ServerStream
+}
+
+type notesAPISubscribeToEventsServer struct {
+	grpc.ServerStream
+}
+
+func (x *notesAPISubscribeToEventsServer) Send(m *SubscribeToEventsResponse) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func _NotesAPI_UploadMetrics_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(NotesAPIServer).UploadMetrics(&notesAPIUploadMetricsServer{stream})
+}
+
+type NotesAPI_UploadMetricsServer interface {
+	SendAndClose(*UploadMetricsResponse) error
+	Recv() (*UploadMetricsRequest, error)
+	grpc.ServerStream
+}
+
+type notesAPIUploadMetricsServer struct {
+	grpc.ServerStream
+}
+
+func (x *notesAPIUploadMetricsServer) SendAndClose(m *UploadMetricsResponse) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func (x *notesAPIUploadMetricsServer) Recv() (*UploadMetricsRequest, error) {
+	m := new(UploadMetricsRequest)
+	if err := x.ServerStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func _NotesAPI_Chat_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(NotesAPIServer).Chat(&notesAPIChatServer{stream})
+}
+
+type NotesAPI_ChatServer interface {
+	Send(*ChatMessageResponse) error
+	Recv() (*ChatMessageRequest, error)
+	grpc.ServerStream
+}
+
+type notesAPIChatServer struct {
+	grpc.ServerStream
+}
+
+func (x *notesAPIChatServer) Send(m *ChatMessageResponse) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func (x *notesAPIChatServer) Recv() (*ChatMessageRequest, error) {
+	m := new(ChatMessageRequest)
+	if err := x.ServerStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 // NotesAPI_ServiceDesc is the grpc.ServiceDesc for NotesAPI service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -250,6 +438,23 @@ var NotesAPI_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _NotesAPI_DeleteNote_Handler,
 		},
 	},
-	Streams:  []grpc.StreamDesc{},
+	Streams: []grpc.StreamDesc{
+		{
+			StreamName:    "SubscribeToEvents",
+			Handler:       _NotesAPI_SubscribeToEvents_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "UploadMetrics",
+			Handler:       _NotesAPI_UploadMetrics_Handler,
+			ClientStreams: true,
+		},
+		{
+			StreamName:    "Chat",
+			Handler:       _NotesAPI_Chat_Handler,
+			ServerStreams: true,
+			ClientStreams: true,
+		},
+	},
 	Metadata: "api/notes/v1/notes.proto",
 }

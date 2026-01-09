@@ -32,14 +32,14 @@ func Run(ctx context.Context) error {
 		return errRunCommand
 	}
 
-	handler := slog.NewJSONHandler(os.Stderr, nil)
+	handler := slog.NewJSONHandler(os.Stderr, &slog.HandlerOptions{Level: slog.LevelDebug})
 	lgr := slog.New(handler)
 
 	inMemoryStorage := inmemory.NewStorage()
 
 	notesUsecase := usecase.NewNotes(lgr, inMemoryStorage)
 
-	grpcController, err := grpccontroller.NewController(notesUsecase)
+	grpcController, err := grpccontroller.NewController(lgr, notesUsecase)
 	if err != nil {
 		lgr.Error("create grpc controller", slog.String("error", err.Error()))
 		return errRunCommand

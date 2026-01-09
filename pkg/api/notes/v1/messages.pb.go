@@ -555,6 +555,546 @@ func (*DeleteNoteResponse) Descriptor() ([]byte, []int) {
 	return file_api_notes_v1_messages_proto_rawDescGZIP(), []int{10}
 }
 
+type SubscribeToEventsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SubscribeToEventsRequest) Reset() {
+	*x = SubscribeToEventsRequest{}
+	mi := &file_api_notes_v1_messages_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SubscribeToEventsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SubscribeToEventsRequest) ProtoMessage() {}
+
+func (x *SubscribeToEventsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_notes_v1_messages_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SubscribeToEventsRequest.ProtoReflect.Descriptor instead.
+func (*SubscribeToEventsRequest) Descriptor() ([]byte, []int) {
+	return file_api_notes_v1_messages_proto_rawDescGZIP(), []int{11}
+}
+
+type SubscribeToEventsResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Types that are valid to be assigned to Payload:
+	//
+	//	*SubscribeToEventsResponse_Heartbeat
+	//	*SubscribeToEventsResponse_CreatedNote
+	Payload       isSubscribeToEventsResponse_Payload `protobuf_oneof:"payload"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SubscribeToEventsResponse) Reset() {
+	*x = SubscribeToEventsResponse{}
+	mi := &file_api_notes_v1_messages_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SubscribeToEventsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SubscribeToEventsResponse) ProtoMessage() {}
+
+func (x *SubscribeToEventsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_api_notes_v1_messages_proto_msgTypes[12]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SubscribeToEventsResponse.ProtoReflect.Descriptor instead.
+func (*SubscribeToEventsResponse) Descriptor() ([]byte, []int) {
+	return file_api_notes_v1_messages_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *SubscribeToEventsResponse) GetPayload() isSubscribeToEventsResponse_Payload {
+	if x != nil {
+		return x.Payload
+	}
+	return nil
+}
+
+func (x *SubscribeToEventsResponse) GetHeartbeat() *HeartbeatEvent {
+	if x != nil {
+		if x, ok := x.Payload.(*SubscribeToEventsResponse_Heartbeat); ok {
+			return x.Heartbeat
+		}
+	}
+	return nil
+}
+
+func (x *SubscribeToEventsResponse) GetCreatedNote() *CreateNoteEvent {
+	if x != nil {
+		if x, ok := x.Payload.(*SubscribeToEventsResponse_CreatedNote); ok {
+			return x.CreatedNote
+		}
+	}
+	return nil
+}
+
+type isSubscribeToEventsResponse_Payload interface {
+	isSubscribeToEventsResponse_Payload()
+}
+
+type SubscribeToEventsResponse_Heartbeat struct {
+	Heartbeat *HeartbeatEvent `protobuf:"bytes,1,opt,name=heartbeat,proto3,oneof"`
+}
+
+type SubscribeToEventsResponse_CreatedNote struct {
+	CreatedNote *CreateNoteEvent `protobuf:"bytes,2,opt,name=created_note,json=createdNote,proto3,oneof"`
+}
+
+func (*SubscribeToEventsResponse_Heartbeat) isSubscribeToEventsResponse_Payload() {}
+
+func (*SubscribeToEventsResponse_CreatedNote) isSubscribeToEventsResponse_Payload() {}
+
+type HeartbeatEvent struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Timestamp     *datetime.DateTime     `protobuf:"bytes,1,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *HeartbeatEvent) Reset() {
+	*x = HeartbeatEvent{}
+	mi := &file_api_notes_v1_messages_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *HeartbeatEvent) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*HeartbeatEvent) ProtoMessage() {}
+
+func (x *HeartbeatEvent) ProtoReflect() protoreflect.Message {
+	mi := &file_api_notes_v1_messages_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use HeartbeatEvent.ProtoReflect.Descriptor instead.
+func (*HeartbeatEvent) Descriptor() ([]byte, []int) {
+	return file_api_notes_v1_messages_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *HeartbeatEvent) GetTimestamp() *datetime.DateTime {
+	if x != nil {
+		return x.Timestamp
+	}
+	return nil
+}
+
+type CreateNoteEvent struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Uuid          string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
+	Title         string                 `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateNoteEvent) Reset() {
+	*x = CreateNoteEvent{}
+	mi := &file_api_notes_v1_messages_proto_msgTypes[14]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateNoteEvent) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateNoteEvent) ProtoMessage() {}
+
+func (x *CreateNoteEvent) ProtoReflect() protoreflect.Message {
+	mi := &file_api_notes_v1_messages_proto_msgTypes[14]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateNoteEvent.ProtoReflect.Descriptor instead.
+func (*CreateNoteEvent) Descriptor() ([]byte, []int) {
+	return file_api_notes_v1_messages_proto_rawDescGZIP(), []int{14}
+}
+
+func (x *CreateNoteEvent) GetUuid() string {
+	if x != nil {
+		return x.Uuid
+	}
+	return ""
+}
+
+func (x *CreateNoteEvent) GetTitle() string {
+	if x != nil {
+		return x.Title
+	}
+	return ""
+}
+
+type UploadMetricsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Value         int64                  `protobuf:"varint,1,opt,name=value,proto3" json:"value,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UploadMetricsRequest) Reset() {
+	*x = UploadMetricsRequest{}
+	mi := &file_api_notes_v1_messages_proto_msgTypes[15]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UploadMetricsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UploadMetricsRequest) ProtoMessage() {}
+
+func (x *UploadMetricsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_notes_v1_messages_proto_msgTypes[15]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UploadMetricsRequest.ProtoReflect.Descriptor instead.
+func (*UploadMetricsRequest) Descriptor() ([]byte, []int) {
+	return file_api_notes_v1_messages_proto_rawDescGZIP(), []int{15}
+}
+
+func (x *UploadMetricsRequest) GetValue() int64 {
+	if x != nil {
+		return x.Value
+	}
+	return 0
+}
+
+type UploadMetricsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Sum           int64                  `protobuf:"varint,1,opt,name=sum,proto3" json:"sum,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UploadMetricsResponse) Reset() {
+	*x = UploadMetricsResponse{}
+	mi := &file_api_notes_v1_messages_proto_msgTypes[16]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UploadMetricsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UploadMetricsResponse) ProtoMessage() {}
+
+func (x *UploadMetricsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_api_notes_v1_messages_proto_msgTypes[16]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UploadMetricsResponse.ProtoReflect.Descriptor instead.
+func (*UploadMetricsResponse) Descriptor() ([]byte, []int) {
+	return file_api_notes_v1_messages_proto_rawDescGZIP(), []int{16}
+}
+
+func (x *UploadMetricsResponse) GetSum() int64 {
+	if x != nil {
+		return x.Sum
+	}
+	return 0
+}
+
+type ChatMessageRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	CorrelationId string                 `protobuf:"bytes,1,opt,name=correlation_id,json=correlationId,proto3" json:"correlation_id,omitempty"`
+	Text          string                 `protobuf:"bytes,2,opt,name=text,proto3" json:"text,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ChatMessageRequest) Reset() {
+	*x = ChatMessageRequest{}
+	mi := &file_api_notes_v1_messages_proto_msgTypes[17]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ChatMessageRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ChatMessageRequest) ProtoMessage() {}
+
+func (x *ChatMessageRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_notes_v1_messages_proto_msgTypes[17]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ChatMessageRequest.ProtoReflect.Descriptor instead.
+func (*ChatMessageRequest) Descriptor() ([]byte, []int) {
+	return file_api_notes_v1_messages_proto_rawDescGZIP(), []int{17}
+}
+
+func (x *ChatMessageRequest) GetCorrelationId() string {
+	if x != nil {
+		return x.CorrelationId
+	}
+	return ""
+}
+
+func (x *ChatMessageRequest) GetText() string {
+	if x != nil {
+		return x.Text
+	}
+	return ""
+}
+
+type ChatMessageResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Types that are valid to be assigned to Payload:
+	//
+	//	*ChatMessageResponse_Success
+	//	*ChatMessageResponse_Error
+	Payload       isChatMessageResponse_Payload `protobuf_oneof:"payload"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ChatMessageResponse) Reset() {
+	*x = ChatMessageResponse{}
+	mi := &file_api_notes_v1_messages_proto_msgTypes[18]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ChatMessageResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ChatMessageResponse) ProtoMessage() {}
+
+func (x *ChatMessageResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_api_notes_v1_messages_proto_msgTypes[18]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ChatMessageResponse.ProtoReflect.Descriptor instead.
+func (*ChatMessageResponse) Descriptor() ([]byte, []int) {
+	return file_api_notes_v1_messages_proto_rawDescGZIP(), []int{18}
+}
+
+func (x *ChatMessageResponse) GetPayload() isChatMessageResponse_Payload {
+	if x != nil {
+		return x.Payload
+	}
+	return nil
+}
+
+func (x *ChatMessageResponse) GetSuccess() *ChatMessageSuccessResponse {
+	if x != nil {
+		if x, ok := x.Payload.(*ChatMessageResponse_Success); ok {
+			return x.Success
+		}
+	}
+	return nil
+}
+
+func (x *ChatMessageResponse) GetError() *ChatMessageErrorResponse {
+	if x != nil {
+		if x, ok := x.Payload.(*ChatMessageResponse_Error); ok {
+			return x.Error
+		}
+	}
+	return nil
+}
+
+type isChatMessageResponse_Payload interface {
+	isChatMessageResponse_Payload()
+}
+
+type ChatMessageResponse_Success struct {
+	Success *ChatMessageSuccessResponse `protobuf:"bytes,1,opt,name=success,proto3,oneof"`
+}
+
+type ChatMessageResponse_Error struct {
+	Error *ChatMessageErrorResponse `protobuf:"bytes,2,opt,name=error,proto3,oneof"`
+}
+
+func (*ChatMessageResponse_Success) isChatMessageResponse_Payload() {}
+
+func (*ChatMessageResponse_Error) isChatMessageResponse_Payload() {}
+
+type ChatMessageSuccessResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	CorrelationId string                 `protobuf:"bytes,1,opt,name=correlation_id,json=correlationId,proto3" json:"correlation_id,omitempty"`
+	Text          string                 `protobuf:"bytes,2,opt,name=text,proto3" json:"text,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ChatMessageSuccessResponse) Reset() {
+	*x = ChatMessageSuccessResponse{}
+	mi := &file_api_notes_v1_messages_proto_msgTypes[19]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ChatMessageSuccessResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ChatMessageSuccessResponse) ProtoMessage() {}
+
+func (x *ChatMessageSuccessResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_api_notes_v1_messages_proto_msgTypes[19]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ChatMessageSuccessResponse.ProtoReflect.Descriptor instead.
+func (*ChatMessageSuccessResponse) Descriptor() ([]byte, []int) {
+	return file_api_notes_v1_messages_proto_rawDescGZIP(), []int{19}
+}
+
+func (x *ChatMessageSuccessResponse) GetCorrelationId() string {
+	if x != nil {
+		return x.CorrelationId
+	}
+	return ""
+}
+
+func (x *ChatMessageSuccessResponse) GetText() string {
+	if x != nil {
+		return x.Text
+	}
+	return ""
+}
+
+type ChatMessageErrorResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	CorrelationId string                 `protobuf:"bytes,1,opt,name=correlation_id,json=correlationId,proto3" json:"correlation_id,omitempty"`
+	Error         string                 `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ChatMessageErrorResponse) Reset() {
+	*x = ChatMessageErrorResponse{}
+	mi := &file_api_notes_v1_messages_proto_msgTypes[20]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ChatMessageErrorResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ChatMessageErrorResponse) ProtoMessage() {}
+
+func (x *ChatMessageErrorResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_api_notes_v1_messages_proto_msgTypes[20]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ChatMessageErrorResponse.ProtoReflect.Descriptor instead.
+func (*ChatMessageErrorResponse) Descriptor() ([]byte, []int) {
+	return file_api_notes_v1_messages_proto_rawDescGZIP(), []int{20}
+}
+
+func (x *ChatMessageErrorResponse) GetCorrelationId() string {
+	if x != nil {
+		return x.CorrelationId
+	}
+	return ""
+}
+
+func (x *ChatMessageErrorResponse) GetError() string {
+	if x != nil {
+		return x.Error
+	}
+	return ""
+}
+
 var File_api_notes_v1_messages_proto protoreflect.FileDescriptor
 
 const file_api_notes_v1_messages_proto_rawDesc = "" +
@@ -593,7 +1133,34 @@ const file_api_notes_v1_messages_proto_rawDesc = "" +
 	"\x12UpdateNoteResponse\"1\n" +
 	"\x11DeleteNoteRequest\x12\x1c\n" +
 	"\x04uuid\x18\x01 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\x04uuid\"\x14\n" +
-	"\x12DeleteNoteResponseB?Z=github.com/ArtamonovEvgenii/grpc-course-2025/pkg/api/notes/v1b\x06proto3"
+	"\x12DeleteNoteResponse\"\x1a\n" +
+	"\x18SubscribeToEventsRequest\"\xa8\x01\n" +
+	"\x19SubscribeToEventsResponse\x12<\n" +
+	"\theartbeat\x18\x01 \x01(\v2\x1c.api.notes.v1.HeartbeatEventH\x00R\theartbeat\x12B\n" +
+	"\fcreated_note\x18\x02 \x01(\v2\x1d.api.notes.v1.CreateNoteEventH\x00R\vcreatedNoteB\t\n" +
+	"\apayload\"E\n" +
+	"\x0eHeartbeatEvent\x123\n" +
+	"\ttimestamp\x18\x01 \x01(\v2\x15.google.type.DateTimeR\ttimestamp\";\n" +
+	"\x0fCreateNoteEvent\x12\x12\n" +
+	"\x04uuid\x18\x01 \x01(\tR\x04uuid\x12\x14\n" +
+	"\x05title\x18\x02 \x01(\tR\x05title\",\n" +
+	"\x14UploadMetricsRequest\x12\x14\n" +
+	"\x05value\x18\x01 \x01(\x03R\x05value\")\n" +
+	"\x15UploadMetricsResponse\x12\x10\n" +
+	"\x03sum\x18\x01 \x01(\x03R\x03sum\"O\n" +
+	"\x12ChatMessageRequest\x12%\n" +
+	"\x0ecorrelation_id\x18\x01 \x01(\tR\rcorrelationId\x12\x12\n" +
+	"\x04text\x18\x02 \x01(\tR\x04text\"\xa6\x01\n" +
+	"\x13ChatMessageResponse\x12D\n" +
+	"\asuccess\x18\x01 \x01(\v2(.api.notes.v1.ChatMessageSuccessResponseH\x00R\asuccess\x12>\n" +
+	"\x05error\x18\x02 \x01(\v2&.api.notes.v1.ChatMessageErrorResponseH\x00R\x05errorB\t\n" +
+	"\apayload\"W\n" +
+	"\x1aChatMessageSuccessResponse\x12%\n" +
+	"\x0ecorrelation_id\x18\x01 \x01(\tR\rcorrelationId\x12\x12\n" +
+	"\x04text\x18\x02 \x01(\tR\x04text\"W\n" +
+	"\x18ChatMessageErrorResponse\x12%\n" +
+	"\x0ecorrelation_id\x18\x01 \x01(\tR\rcorrelationId\x12\x14\n" +
+	"\x05error\x18\x02 \x01(\tR\x05errorB?Z=github.com/ArtamonovEvgenii/grpc-course-2025/pkg/api/notes/v1b\x06proto3"
 
 var (
 	file_api_notes_v1_messages_proto_rawDescOnce sync.Once
@@ -607,31 +1174,46 @@ func file_api_notes_v1_messages_proto_rawDescGZIP() []byte {
 	return file_api_notes_v1_messages_proto_rawDescData
 }
 
-var file_api_notes_v1_messages_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
+var file_api_notes_v1_messages_proto_msgTypes = make([]protoimpl.MessageInfo, 21)
 var file_api_notes_v1_messages_proto_goTypes = []any{
-	(*CreateNoteRequest)(nil),        // 0: api.notes.v1.CreateNoteRequest
-	(*CreateNoteResponse)(nil),       // 1: api.notes.v1.CreateNoteResponse
-	(*GetNotesListRequest)(nil),      // 2: api.notes.v1.GetNotesListRequest
-	(*GetNotesListResponseNote)(nil), // 3: api.notes.v1.GetNotesListResponseNote
-	(*GetNotesListResponse)(nil),     // 4: api.notes.v1.GetNotesListResponse
-	(*GetNoteRequest)(nil),           // 5: api.notes.v1.GetNoteRequest
-	(*GetNoteResponse)(nil),          // 6: api.notes.v1.GetNoteResponse
-	(*UpdateNoteRequest)(nil),        // 7: api.notes.v1.UpdateNoteRequest
-	(*UpdateNoteResponse)(nil),       // 8: api.notes.v1.UpdateNoteResponse
-	(*DeleteNoteRequest)(nil),        // 9: api.notes.v1.DeleteNoteRequest
-	(*DeleteNoteResponse)(nil),       // 10: api.notes.v1.DeleteNoteResponse
-	(*datetime.DateTime)(nil),        // 11: google.type.DateTime
+	(*CreateNoteRequest)(nil),          // 0: api.notes.v1.CreateNoteRequest
+	(*CreateNoteResponse)(nil),         // 1: api.notes.v1.CreateNoteResponse
+	(*GetNotesListRequest)(nil),        // 2: api.notes.v1.GetNotesListRequest
+	(*GetNotesListResponseNote)(nil),   // 3: api.notes.v1.GetNotesListResponseNote
+	(*GetNotesListResponse)(nil),       // 4: api.notes.v1.GetNotesListResponse
+	(*GetNoteRequest)(nil),             // 5: api.notes.v1.GetNoteRequest
+	(*GetNoteResponse)(nil),            // 6: api.notes.v1.GetNoteResponse
+	(*UpdateNoteRequest)(nil),          // 7: api.notes.v1.UpdateNoteRequest
+	(*UpdateNoteResponse)(nil),         // 8: api.notes.v1.UpdateNoteResponse
+	(*DeleteNoteRequest)(nil),          // 9: api.notes.v1.DeleteNoteRequest
+	(*DeleteNoteResponse)(nil),         // 10: api.notes.v1.DeleteNoteResponse
+	(*SubscribeToEventsRequest)(nil),   // 11: api.notes.v1.SubscribeToEventsRequest
+	(*SubscribeToEventsResponse)(nil),  // 12: api.notes.v1.SubscribeToEventsResponse
+	(*HeartbeatEvent)(nil),             // 13: api.notes.v1.HeartbeatEvent
+	(*CreateNoteEvent)(nil),            // 14: api.notes.v1.CreateNoteEvent
+	(*UploadMetricsRequest)(nil),       // 15: api.notes.v1.UploadMetricsRequest
+	(*UploadMetricsResponse)(nil),      // 16: api.notes.v1.UploadMetricsResponse
+	(*ChatMessageRequest)(nil),         // 17: api.notes.v1.ChatMessageRequest
+	(*ChatMessageResponse)(nil),        // 18: api.notes.v1.ChatMessageResponse
+	(*ChatMessageSuccessResponse)(nil), // 19: api.notes.v1.ChatMessageSuccessResponse
+	(*ChatMessageErrorResponse)(nil),   // 20: api.notes.v1.ChatMessageErrorResponse
+	(*datetime.DateTime)(nil),          // 21: google.type.DateTime
 }
 var file_api_notes_v1_messages_proto_depIdxs = []int32{
-	11, // 0: api.notes.v1.GetNotesListResponseNote.updated_at:type_name -> google.type.DateTime
+	21, // 0: api.notes.v1.GetNotesListResponseNote.updated_at:type_name -> google.type.DateTime
 	3,  // 1: api.notes.v1.GetNotesListResponse.notes:type_name -> api.notes.v1.GetNotesListResponseNote
-	11, // 2: api.notes.v1.GetNoteResponse.crated_at:type_name -> google.type.DateTime
-	11, // 3: api.notes.v1.GetNoteResponse.updated_at:type_name -> google.type.DateTime
-	4,  // [4:4] is the sub-list for method output_type
-	4,  // [4:4] is the sub-list for method input_type
-	4,  // [4:4] is the sub-list for extension type_name
-	4,  // [4:4] is the sub-list for extension extendee
-	0,  // [0:4] is the sub-list for field type_name
+	21, // 2: api.notes.v1.GetNoteResponse.crated_at:type_name -> google.type.DateTime
+	21, // 3: api.notes.v1.GetNoteResponse.updated_at:type_name -> google.type.DateTime
+	13, // 4: api.notes.v1.SubscribeToEventsResponse.heartbeat:type_name -> api.notes.v1.HeartbeatEvent
+	14, // 5: api.notes.v1.SubscribeToEventsResponse.created_note:type_name -> api.notes.v1.CreateNoteEvent
+	21, // 6: api.notes.v1.HeartbeatEvent.timestamp:type_name -> google.type.DateTime
+	19, // 7: api.notes.v1.ChatMessageResponse.success:type_name -> api.notes.v1.ChatMessageSuccessResponse
+	20, // 8: api.notes.v1.ChatMessageResponse.error:type_name -> api.notes.v1.ChatMessageErrorResponse
+	9,  // [9:9] is the sub-list for method output_type
+	9,  // [9:9] is the sub-list for method input_type
+	9,  // [9:9] is the sub-list for extension type_name
+	9,  // [9:9] is the sub-list for extension extendee
+	0,  // [0:9] is the sub-list for field type_name
 }
 
 func init() { file_api_notes_v1_messages_proto_init() }
@@ -639,13 +1221,21 @@ func file_api_notes_v1_messages_proto_init() {
 	if File_api_notes_v1_messages_proto != nil {
 		return
 	}
+	file_api_notes_v1_messages_proto_msgTypes[12].OneofWrappers = []any{
+		(*SubscribeToEventsResponse_Heartbeat)(nil),
+		(*SubscribeToEventsResponse_CreatedNote)(nil),
+	}
+	file_api_notes_v1_messages_proto_msgTypes[18].OneofWrappers = []any{
+		(*ChatMessageResponse_Success)(nil),
+		(*ChatMessageResponse_Error)(nil),
+	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_api_notes_v1_messages_proto_rawDesc), len(file_api_notes_v1_messages_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   11,
+			NumMessages:   21,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
