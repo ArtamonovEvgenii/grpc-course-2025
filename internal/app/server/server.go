@@ -56,15 +56,17 @@ func Run(ctx context.Context) error {
 	grpcv1.RegisterNotesAPIServer(grpcServer.Server(), grpcController)
 	reflection.Register(grpcServer.Server())
 
-	httpGWMux, err := httpcontroller.NewGatewayMux(ctx, cfg.GRPCServer)
+	grpcGWHandler, err := httpcontroller.GRPCGatewayHandler(ctx, cfg.GRPCServer)
 	if err != nil {
 		lgr.Error("create grpc gateway", slog.String("error", err.Error()))
 		return errRunCommand
 	}
 
+	swaggerHandler := httpcontroller.SwaggerHandler()
+
 	mux := http.NewServeMux()
-	mux.Handle("/", httpGWMux)
-	httpcontroller.ServeSwagger(mux)
+	mux.Handle("/", grpcGWHandler)
+	mux.Handle("/swagger/", swaggerHandler)
 
 	httpServer, err := httptransport.NewServer(lgr, cfg.HTTPServer, mux)
 	if err != nil {

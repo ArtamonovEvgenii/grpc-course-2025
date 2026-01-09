@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net"
+	"net/http"
 	"strconv"
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
@@ -11,13 +12,14 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 
 	"github.com/ArtamonovEvgenii/grpc-course-2025/config"
+	httpMiddleware "github.com/ArtamonovEvgenii/grpc-course-2025/internal/infrastructure/transport/http/middleware"
 	grpcv1 "github.com/ArtamonovEvgenii/grpc-course-2025/pkg/api/notes/v1"
 )
 
-func NewGatewayMux(
+func GRPCGatewayHandler(
 	ctx context.Context,
 	grpcCfg config.GRPCServer,
-) (*runtime.ServeMux, error) {
+) (http.Handler, error) {
 	conn, err := grpc.NewClient(
 		net.JoinHostPort(grpcCfg.Host, strconv.Itoa(grpcCfg.Port)),
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
@@ -26,15 +28,17 @@ func NewGatewayMux(
 		return nil, fmt.Errorf("create grpc client: %w", err)
 	}
 
-	grpcGWMux := runtime.NewServeMux(
+	gatewayMux := runtime.NewServeMux(
 	//runtime.WithIncomingHeaderMatcher(httptransport.CustomIncomingHeaderMatcher),
 	//runtime.WithOutgoingHeaderMatcher(httptransport.CustomOutgoingHeaderMatcher),
 	)
 
-	err = grpcv1.RegisterNotesAPIHandler(ctx, grpcGWMux, conn)
+	err = grpcv1.RegisterNotesAPIHandler(ctx, gatewayMux, conn)
 	if err != nil {
 		return nil, fmt.Errorf("register grpc gateway: %w", err)
 	}
 
-	return grpcGWMux, nil
+	mux := httpMiddleware.CORSMiddleware(gatewayMux)
+
+	return mux, nil
 }
