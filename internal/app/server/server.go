@@ -10,6 +10,8 @@ import (
 	"golang.org/x/sync/errgroup"
 	"google.golang.org/grpc/reflection"
 
+	"github.com/tmc/grpc-websocket-proxy/wsproxy"
+
 	"github.com/ArtamonovEvgenii/grpc-course-2025/config"
 	grpccontroller "github.com/ArtamonovEvgenii/grpc-course-2025/internal/controller/grpc"
 	httpcontroller "github.com/ArtamonovEvgenii/grpc-course-2025/internal/controller/http"
@@ -67,8 +69,9 @@ func Run(ctx context.Context) error {
 	mux := http.NewServeMux()
 	mux.Handle("/", grpcGWHandler)
 	mux.Handle("/swagger/", swaggerHandler)
+	httpHandler := wsproxy.WebsocketProxy(mux)
 
-	httpServer, err := httptransport.NewServer(lgr, cfg.HTTPServer, mux)
+	httpServer, err := httptransport.NewServer(lgr, cfg.HTTPServer, httpHandler)
 	if err != nil {
 		lgr.Error("create http server", slog.String("error", err.Error()))
 		return errRunCommand
