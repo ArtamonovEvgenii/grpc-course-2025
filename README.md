@@ -15,6 +15,15 @@
       * [Задание 2: Клиентский стриминг (Client-side Streaming)](#задание-2-клиентский-стриминг-client-side-streaming)
       * [Задание 3: Двунаправленный стриминг (Bidirectional Streaming)](#задание-3-двунаправленный-стриминг-bidirectional-streaming)
       * [Задание 4: Интерцепторы и обработка ошибок (Advanced)](#задание-4-интерцепторы-и-обработка-ошибок-advanced)
+    * [4 Домашнее задание: gRPC-Gateway, Swagger и работа с Web](#4-домашнее-задание-grpc-gateway-swagger-и-работа-с-web)
+      * [Задание 1. Подготовка Proto-контрактов](#задание-1-подготовка-proto-контрактов)
+      * [Задание 2. Генерация кода и OpenAPI (Swagger)](#задание-2-генерация-кода-и-openapi-swagger)
+      * [Задание 3. Реализация HTTP-Gateway сервера](#задание-3-реализация-http-gateway-сервера)
+      * [Задание 4. Swagger UI и статика](#задание-4-swagger-ui-и-статика)
+      * [Задание 5. Middleware и CORS](#задание-5-middleware-и-cors)
+      * [Задание со звёздочкой (Bonus) ⭐️](#задание-со-звёздочкой-bonus-)
+      * [Критерии приемки](#критерии-приемки)
+  * [локальный запуск](#локальный-запуск)
   * [commands](#commands)
 <!-- TOC -->
 
@@ -23,6 +32,8 @@
 ## refs
 
 - [course](https://education.easyp.tech/)
+
+
 
 ## homework
 
@@ -159,6 +170,112 @@ Correlation ID: Добавьте в структуру сообщения пол
 
 One-off ошибки: В двунаправленном стриме реализуйте передачу «бизнесовой» ошибки без разрыва соединения. Используйте конструкцию oneof в прото-файле, где одним из вариантов будет объект google.rpc.Status.
 
+### 4 Домашнее задание: gRPC-Gateway, Swagger и работа с Web
+
+[tg message link](https://t.me/c/3309935762/164)
+
+**Цель:** Научить наш микросервис взаимодействовать с внешним миром через HTTP/REST, настроить автоматическую документацию и подготовить почву для фронтенда.
+
+
+#### Задание 1. Подготовка Proto-контрактов
+
+Необходимо разметить существующие RPC-методы HTTP-правилами, чтобы gRPC-Gateway понимал, как транслировать REST-запросы в gRPC-вызовы.
+
+1. В ваши `.proto` файлы добавьте импорт:
+
+    ```protobuf
+    import "google/api/annotations.proto";
+    ```
+
+    *(Примечание: убедитесь, что файлы google api доступны вашему компилятору. Обычно они подтягиваются как зависимости).*
+
+2. Для методов вашего сервиса пропишите опцию `google.api.http`.
+
+    * **POST** — для создания (Create). Укажите `body: "*"`, чтобы мапить всё тело JSON в сообщение запроса.
+    * **GET** — для получения (Get/List). Используйте path-параметры (например, `/note/v1/{id}`).
+    * **DELETE/PUT** — при необходимости.
+ 
+    **Пример:**
+     
+    ```protobuf
+    rpc Create(CreateRequest) returns (CreateResponse) {
+        option (google.api.http) = {
+            post: "/note/v1"
+            body: "*"
+        };
+    }
+    ```
+
+#### Задание 2. Генерация кода и OpenAPI (Swagger)
+
+1. Установите плагины для генерации (если еще не установлены):
+
+    ```bash
+    go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway@latest
+    go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2@latest
+    ```
+
+2. Добавьте в ваш `Makefile` (или команду генерации) новые флаги:
+
+   * `--grpc-gateway_out` — для генерации Go-кода прокси (`.pb.gw.go`).
+   * `--openapiv2_out` — для генерации Swagger-спецификации (`.json`).
+   * Рекомендуется складывать swagger-файл в отдельную директорию (например, `pkg/api` или `swagger`).
+
+3. Запустите генерацию и убедитесь, что файлы создались без ошибок.
+
+
+#### Задание 3. Реализация HTTP-Gateway сервера
+
+Вам нужно поднять HTTP-сервер, который будет принимать JSON и конвертировать его в gRPC.
+
+1. В `main.go` (или `cmd/app`) создайте новый `runtime.NewServeMux`.
+2. Зарегистрируйте хендлеры вашего сервиса, используя сгенерированный метод `Register<ServiceName>HandlerFromEndpoint`.
+
+   * В качестве `endpoint` укажите адрес вашего же gRPC-сервера (например, `localhost:50051`).
+   * Используйте `grpc.WithTransportCredentials(insecure.NewCredentials())` для локальной разработки.
+
+3. Запустите HTTP-сервер на **отдельном порту** (например, `:8080` или `:8081`).
+
+---
+
+#### Задание 4. Swagger UI и статика
+
+Чтобы документацией можно было пользоваться, нужно подключить визуальный интерфейс.
+
+1. Скачайте или подключите статические файлы Swagger UI.
+2. Используя `embed` (как было показано на лекции) или раздачу файлов с диска, настройте эндпоинт, который будет отдавать UI.
+3. Настройте эндпоинт, который отдает ваш сгенерированный `.json` файл (спецификацию).
+4. **Результат:** При заходе в браузер (например, `http://localhost:8080/swagger-ui/`) должен открываться красивый интерфейс, через который можно делать запросы к вашему бэкенду.
+
+#### Задание 5. Middleware и CORS
+
+Браузеры блокируют запросы между разными источниками (например, если фронтенд на порту 3000, а бэк на 8080).
+
+1. Напишите middleware (или используйте готовую библиотеку, например, `rs/cors`), который добавляет заголовки CORS (`Access-Control-Allow-Origin`, `Access-Control-Allow-Methods` и др.).
+2. Оберните ваш Gateway Mux в этот middleware.
+
+#### Задание со звёздочкой (Bonus) ⭐️
+
+В лекции обсуждалось, что браузер не поддерживает HTTP/2 стримы напрямую.
+
+1. Если у вас есть стриминг-методы, подключите библиотеку `github.com/tmc/grpc-websocket-proxy`.
+2. Оберните ваш HTTP-сервер так, чтобы он умел апгрейдить соединение до WebSocket для стримов.
+3. Проверьте работу через утилиту `wscat` или JS-скрипт.
+
+
+#### Критерии приемки
+
+1. Сервис компилируется и запускается.
+2. Доступен HTTP-порт, через который можно сделать `curl` запрос (Create/Get) и получить корректный ответ.
+3. Доступен Swagger UI, через который "протыкиваются" ручки.
+4. Валидация полей (если была в gRPC) возвращает понятные HTTP-ошибки (400 Bad Request и т.д.).
+
+## локальный запуск
+
+1) Скопировать файл `example.env` в `<project-root/local/local.env>`
+2) Задать необходимые значения переменных в файле `<project-root/local/local.env`
+3) Выполнить команду `make run-server`
+
 ## commands
 
 ```shell
@@ -167,4 +284,14 @@ easyp mod update
 
 # fix ambiguous import: found package cloud.google.com/go/compute/metadata in multiple modules 
 go get cloud.google.com/go
+```
+
+Установка зависимостей
+
+```shell
+go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.31.0
+go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.3.0
+go install github.com/easyp-tech/easyp/cmd/easyp@v0.7.15
+go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway@latest
+go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2
 ```

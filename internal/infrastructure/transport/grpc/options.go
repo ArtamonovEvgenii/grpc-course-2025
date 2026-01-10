@@ -29,8 +29,8 @@ func ServerOptions(
 		grpc.UnaryInterceptor(
 			grpcmiddleware.ChainUnaryServer(
 				interceptor.NewRecoveryUnaryInterceptor(lgr),
-				interceptor.NewAuthUnaryInterceptor(token),
 				interceptor.NewLoggingUnaryInterceptor(lgr),
+				interceptor.NewAuthUnaryInterceptor(token),
 			),
 		),
 		grpc.StreamInterceptor(

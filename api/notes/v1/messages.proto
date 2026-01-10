@@ -15,6 +15,12 @@ message CreateNoteRequest {
   string text = 2[
     (buf.validate.field).string.min_len = 10
   ];
+
+  // пример валидации с учетом значений разных атрибутов
+  option (buf.validate.message).cel = {
+    message: "title should not be equal to text",
+    expression: "this.title != this.text",
+  };
 }
 
 message CreateNoteResponse{
