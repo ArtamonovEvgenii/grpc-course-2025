@@ -13,6 +13,7 @@ import (
 	"github.com/tmc/grpc-websocket-proxy/wsproxy"
 
 	"github.com/ArtamonovEvgenii/grpc-course-2025/config"
+	swaggerAPI "github.com/ArtamonovEvgenii/grpc-course-2025/docs/api/notes/v1"
 	grpccontroller "github.com/ArtamonovEvgenii/grpc-course-2025/internal/controller/grpc"
 	httpcontroller "github.com/ArtamonovEvgenii/grpc-course-2025/internal/controller/http"
 	grpctransport "github.com/ArtamonovEvgenii/grpc-course-2025/internal/infrastructure/transport/grpc"
@@ -20,6 +21,7 @@ import (
 	"github.com/ArtamonovEvgenii/grpc-course-2025/internal/repository/inmemory"
 	"github.com/ArtamonovEvgenii/grpc-course-2025/internal/usecase"
 	grpcv1 "github.com/ArtamonovEvgenii/grpc-course-2025/pkg/api/notes/v1"
+	"github.com/ArtamonovEvgenii/grpc-course-2025/pkg/swagger"
 )
 
 var errRunCommand = fmt.Errorf("run command error")
@@ -64,10 +66,10 @@ func Run(ctx context.Context) error {
 		return errRunCommand
 	}
 
-	swaggerHandler := httpcontroller.SwaggerHandler()
+	swaggerHandler := swagger.Handler(swaggerAPI.Content)
 
 	mux := http.NewServeMux()
-	mux.Handle("/", grpcGWHandler)
+	mux.Handle("/api/v1/", grpcGWHandler)
 	mux.Handle("/swagger/", swaggerHandler)
 	httpHandler := wsproxy.WebsocketProxy(mux)
 
