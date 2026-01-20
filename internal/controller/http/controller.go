@@ -29,8 +29,8 @@ func GRPCGatewayHandler(
 	}
 
 	gatewayMux := runtime.NewServeMux(
-	//runtime.WithIncomingHeaderMatcher(httptransport.CustomIncomingHeaderMatcher),
-	//runtime.WithOutgoingHeaderMatcher(httptransport.CustomOutgoingHeaderMatcher),
+	//runtime.WithIncomingHeaderMatcher(customIncomingHeaderMatcher),
+	//runtime.WithOutgoingHeaderMatcher(customOutgoingHeaderMatcher),
 	)
 
 	err = grpcv1.RegisterNotesAPIHandler(ctx, gatewayMux, conn)

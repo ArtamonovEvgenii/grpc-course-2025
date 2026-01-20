@@ -6,12 +6,12 @@ import (
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 )
 
-func CustomIncomingHeaderMatcher(key string) (string, bool) {
+func customIncomingHeaderMatcher(key string) (string, bool) {
 	key = textproto.CanonicalMIMEHeaderKey(key)
 	return runtime.DefaultHeaderMatcher(key)
 }
 
-func CustomOutgoingHeaderMatcher(key string) (string, bool) {
+func customOutgoingHeaderMatcher(key string) (string, bool) {
 	switch key {
 	case
 		"accept",
